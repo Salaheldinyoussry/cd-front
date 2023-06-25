@@ -19,10 +19,11 @@
 	height: 100%;
 	backdrop-filter: blur(6px);
 	-webkit-backdrop-filter: blur(6px);
-	background: rgba(10, 10, 10, 0.75);
+	background: #604d92;
 	box-shadow: 0 8px 32px rgb(2, 4, 24);
 	border-right: 2px solid rgba(255, 255, 255, .09);
 	transition: .4s ease-in-out;
+	height: 100vh;
 }
 
 .sidebar.open {

@@ -2,21 +2,60 @@ import { useState, useEffect } from "react";
 
 import './Profile.css';
 import avatar from '../../assets/avatar.png';
+import pro from '../../assets/pro.jpg';
+
+import { GET } from '../utils/API';
+import { PostWall } from "../PostWall/PostWall";
 
 export function Profile() {
-    const [firstName, setFirstName] = useState("Tom");
-    const [secondName, setSecondName] = useState("Holland");
-    const [job, setJob] = useState("Machine learing Engineer");
+    const [name, setName] = useState("Tom");
     const [email, setEmail] = useState("TomHolland@gmail.com");
-    const [password, setPassword] = useState("TomHolland200");
+    // const [password, setPassword] = useState("******");
+    const [image, setImage] = useState(avatar);
+    const [small , setSmall] = useState(false);
+
+    const [me, setMe] = useState(true);
 
     useEffect(() => {
         // update them to database
+        window.addEventListener("scroll", function () {
+            // var banner = document.querySelector(".pro-head");
+            // if(window.scrollY > 0)
+            //     setSmall(!small);
+
+            //     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            // if (scrollTop === 0) {
+            //     setSmall(false)
+            //     // The user has scrolled to the top of the page
+            //     console.log("Scrolled to top of page");
+            //     }
+
+            // if (window.scrollY > 0) {
+            //     setSmall(false)
+            //     // banner.classList.add("pro-head-min");
+            // }
+            // banner.classList.toggle("pro-head-min", window.scrollY > 0);
+          });
+
+    },[]);
+
+    useEffect(() => {
+        // update them to database
+
+        GET('user').then((res) => {
+            setName(res.name);
+            // setSecondName(res.secondName);
+
+            setEmail(res.email);
+            setImage(res.image);
+            sessionStorage.setItem('user', JSON.stringify(res));
+
+        })
+
         
-    },[firstName, secondName, job, email, password]);
+    },[name, email]);
 
     const [isFirstNameDisabled, setIsFirstNameDisabled] = useState(true);
-    const [isSecondNameDisabled, setIsSecondNameDisabled] = useState(true);
     const [isJobDisabled, setIsJobDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [isPasswordDisabled, setIsPasswordDisabled] = useState(true);
@@ -24,9 +63,9 @@ export function Profile() {
     function editFirstName() {
         setIsFirstNameDisabled(!isFirstNameDisabled);
     }
-    function editSecondName() {
-        setIsSecondNameDisabled(!isSecondNameDisabled);
-    }
+    // function editSecondName() {
+    //     setIsSecondNameDisabled(!isSecondNameDisabled);
+    // }
     function editJob() {
         setIsJobDisabled(!isJobDisabled);
     }
@@ -38,69 +77,28 @@ export function Profile() {
     }
 
     return (
-        <div className="profile">
-            <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
-            <div className="profile-card">
-                <h1> My Profile </h1>
-                <img className="profile-img" src={avatar} alt="..." />
-
-                <div className="input-fields">
-                    <h2> First Name </h2>
-                    <input type="text" className="input-value" value={firstName} 
-                        disabled={isFirstNameDisabled} 
-                        onChange={(e) => {
-                            setFirstName(e.target.value);
-                        }}
-                    />
-                    <button className="edit-icon" onClick={editFirstName}>
+        <div>
+                <div className={small?  "pro-head pro-head-min": "pro-head" } >
+                    <div className="pro-head-mainimg">
+                        <img src={pro} ></img> 
+                        <div className="pro-banner"></div>
+                        
+                    </div>
+                    <div className="pro-head-img">
+                        <img style={{borderRadius:"50%" , height:"150px" ,border:"6px solid #fff"}} src={image || avatar} alt="avatar" />
+                        <div className="pro-name">{name} {me &&       
+                        <button className="edit-icon" onClick={editPassword}>
                         <i className="bx bx-pencil"></i>
-                    </button>
-
-                    <h2> Second Name </h2>
-                    <input type="text" className="input-value" value={secondName} 
-                        disabled={isSecondNameDisabled} 
-                        onChange={(e) => {
-                            setSecondName(e.target.value);
-                        }}
-                    />
-                    <button className="edit-icon" onClick={editSecondName}>
-                        <i className="bx bx-pencil"></i>
-                    </button>
-
-                    <h2> Job Description </h2>
-                    <input type="text" className="input-value" value={job} 
-                        disabled={isJobDisabled} 
-                        onChange={(e) => {
-                            setJob(e.target.value);
-                        }}
-                    />
-                    <button className="edit-icon" onClick={editJob}>
-                        <i className="bx bx-pencil"></i>
-                    </button>
-
-                    <h2> Email </h2>
-                    <input type="text" className="input-value" value={email} 
-                        disabled={isEmailDisabled} 
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                        }}
-                    />
-                    <button className="edit-icon" onClick={editEmail}>
-                        <i className="bx bx-pencil"></i>
-                    </button>
-
-                    <h2> Password </h2>
-                    <input type="password" className="input-value" value={password} 
-                        disabled={isPasswordDisabled} 
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                    />
-                    <button className="edit-icon" onClick={editPassword}>
-                        <i className="bx bx-pencil"></i>
-                    </button>
+                    </button>  }
+                    </div>
+                    </div>
                 </div>
-            </div>
+                <div  className={small?  "pro-body": "pro-body" }>
+                <PostWall me={true} />
+                </div>
+
+
+
         </div>
     );
 }

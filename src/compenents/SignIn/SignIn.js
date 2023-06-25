@@ -3,9 +3,31 @@ import './SignIn.css';
 import { useNavigate } from "react-router-dom";
 
 import { TitleBar } from '../TitleBar/TitleBar.js';
+import {POST} from "../utils/API";
+import {toast} from 'react-toastify';
 
 export function SignIn() {
   const navigate = useNavigate();
+
+  function signIn() {
+    var email = document.getElementById("emailst").value;
+    var password = document.getElementById("passwordst").value;
+    var user = {
+      "email": email,
+      "password": password
+    }
+    POST("login",user).then((response) => {
+      console.log(response);
+      localStorage.setItem('_ria', response.token);
+      navigate('/');
+    } 
+    ).catch((error) => {
+      console.log(error);
+      toast("Invalid password or Email", { type: 'error' });
+
+    });
+  }
+
 
   return (
     <div>
@@ -30,7 +52,7 @@ export function SignIn() {
               </div>
 
               <div class="sign-in-button">
-                <input type="button" class="block-button-big" value="SIGN IN" onClick={() => navigate("/home")}/>
+                <input type="button" class="block-button-big" value="SIGN IN" onClick={signIn}/>
               </div>
           </form>
 

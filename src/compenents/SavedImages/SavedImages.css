@@ -92,3 +92,31 @@
     width: 500px;
     height: 50px;
 }
+
+.gall-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-top: 20px;
+    position: fixed;
+}
+.gall-head h1{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
+    font-style: italic;
+    font-size: 24px;
+    padding: 8px;
+    cursor: pointer;
+    color: #604d92;
+    border: 1px solid #604d92;
+    background-color: #FFF;
+    font-weight: 400;
+}
+.gall-head .sel{
+    color: #fff;
+    background-color:  #604d92;
+    font-size: 24px;
+
+  
+}

@@ -1,7 +1,42 @@
 import './SignUp.css';
 import { TitleBar } from '../TitleBar/TitleBar.js';
 
+import {POST} from '../utils/API.js';
+import {toast} from 'react-toastify';
+import {
+  useNavigate,
+
+} from "react-router-dom";
+
+
 export function SignUp() {
+  let navigate = useNavigate();
+
+  function signUp() {
+    const firstname = document.getElementById("firstnamest").value;
+    const secondname = document.getElementById("secondnamest").value;
+    const email = document.getElementById("emailst").value;
+    const password = document.getElementById("passwordst").value;
+    const confirmpassword = document.getElementById("confirm-passwordst").value;
+    if (password != confirmpassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    const user = {
+      "email": email,
+      "password": password,
+      "name": firstname + " " + secondname
+    }
+
+    POST("signup",user).then((response) => {
+      console.log(response);
+      toast("Account created successfully", { type: 'success' });
+      navigate('/login');
+    }).catch((error) => {
+      console.log(error);
+      toast("Account creation failed", { type: 'error' });
+    });
+  }
   return (
     <div>
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -30,7 +65,7 @@ export function SignUp() {
           </div>
 
           <div class="sign-up-button">
-            <input type="button" class="block-button-big" value="SIGN UP"/>
+            <input type="button" class="block-button-big" value="SIGN UP" onClick={signUp}/>
           </div>
         </form>
         

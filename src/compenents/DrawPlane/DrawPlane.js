@@ -16,7 +16,7 @@ export function DrawPlane() {
     const ctx = canvas.getContext("2d");
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = brushColor;
     ctx.lineWidth = lineWidth;
     ctx.fillStyle = brushColor;
     ctxRef.current = ctx;
@@ -58,7 +58,8 @@ export function DrawPlane() {
   }
 
   return (
-    <div className="draw-plane">
+    <div className="draw-plane" style={{padding:"40px 10%"}}>
+        <div style={{width:"100%", display:"flex", flexDirection:"column", alignItems:"center"}}>
         <DrawToolBar
           setLineWidth={setLineWidth}
           setBrushColor={setBrushColor}
@@ -72,9 +73,10 @@ export function DrawPlane() {
           onMouseUp={endDrawing}
           onMouseMove={draw}
           ref={canvasRef}
-          width={`1200px`}
-          height={`540px`}
+          width={`512px`}
+          height={`512px`}
         />
+        </div>
     </div>
   );
 }

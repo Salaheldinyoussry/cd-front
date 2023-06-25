@@ -1,15 +1,37 @@
 import { useEffect } from "react";
+import {toast} from 'react-toastify';
 
 import './DrawToolBar.css';
 
 export function DrawToolBar({ setLineWidth, setBrushColor, brushColor, setIsEraser, isEraser, canvasElement}) {
     const classes_colors = new Map([
-        ["", "#000000"],
-        ["ground", "#964B00"],
-        ["grass", "#00FF00"],
-        ["person", "#FFCCCB"],
-        ["sky", "#ADD8E6"],
-        ["floor", "#808080"]
+        ["Select Category", ""],
+        ["person", "#FF0000"],
+        ["bicycle", "#00FF00"],
+        ["car", "#0000FF"],
+        ["motorcycle", "#FFFF00"],
+        ["airplane", "#FF00FF"],
+        ["bus", "#00FFFF"],
+        ["train", "#800000"],
+        ["truck", "#808000"],
+        ["boat", "#008000"],
+        ["traffic light", "#FFA500"],
+        ["fire hydrant", "#FFC0CB"],
+        ["stop sign", "#800080"],
+        ["parking meter", "#FFD700"],
+        ["bench", "#C0C0C0"],
+        ["bird", "#FF8C00"],
+        ["cat", "#FF1493"],
+        ["dog", "#00BFFF"],
+        ["horse", "#008080"],
+        ["sheep", "#DAA520"],
+        ["cow", "#FF69B4"],
+        ["elephant", "#4B0082"],
+        ["bear", "#9400D3"],
+        ["zebra", "#00FA9A"],
+        ["giraffe", "#FF7F50"],
+        ["backpack", "#2E8B57"],
+        ["umbrella", "#FF4500"],
     ]);
     const seg_classes = Array.from(classes_colors.keys());
     const classes_options = seg_classes.map((class_option) => 
@@ -67,7 +89,38 @@ export function DrawToolBar({ setLineWidth, setBrushColor, brushColor, setIsEras
             </div>
 
             <div className="button-bar">
-                <button className="btn save"> 
+                <button className="btn save"
+
+
+                    onClick={(e) => {
+                       canvasElement.current.toBlob(async (blob) => {
+                            // Create FormData object and add the Blob object to it
+                            const formData = new FormData();
+                            formData.append("file", blob, "canvas-image.png");
+                            formData.append("type", 'mask');
+
+                            const response = await fetch(process.env.REACT_APP_API_BASE_URL+ 'image/upload', {
+                                method: 'POST',
+                                body: formData,
+                                headers: new Headers({
+                                  'Authorization': `Bearer ${localStorage.getItem('_ria')}`,
+                                })
+                          
+                              });
+
+                              if (response.ok) {
+                                const data = await response.json();
+                                toast(`Mask Saved successfully`);
+                              } else {
+                                toast(`Error uploading file: ${response.statusText}`,{type:'error'});
+                              }
+                              
+
+                        });
+                        
+                    }}>
+
+
                     <i className="bx bx-save" style={{ fontSize: '22px' }}></i>
                     Save 
                 </button>
