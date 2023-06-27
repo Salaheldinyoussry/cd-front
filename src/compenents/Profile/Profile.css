@@ -1,0 +1,153 @@
+.profile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+	align-items: center;
+    padding: 10px;
+    width: 650px;
+    height: 500px;
+    background-color: var(--light-gray-color);
+    border-radius: 8px;
+}
+
+.profile-card .profile-img {
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+}
+
+.input-fields {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto auto;
+    gap: 8px;
+}
+
+.profile-card h2 {
+    font-size: 22px;
+    font-style: italic;
+    padding: 3px;
+}
+
+.input-value {
+    padding: 5px;
+    width: 220px;
+    height: 30px;
+    font-size: 16px;
+}
+
+.edit-icon {
+    /* width: 30px;
+    height: 30px; */
+    font-size: 24px;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.edit-icon:hover, .edit-icon:active {
+    background-color: var(--gray-color);
+}
+
+.pro-head{
+    height: 500px;
+    width: 100%;
+    color: #1c1e21;
+    direction: ltr;
+    /* background-image:linear-gradient(to top, #FFFFFF, rgba(255,255,255.9), rgba(255,255,255,.7), rgba(255,255,255,.4), rgba(255,255,255,0)); */
+    background-color: #fff;
+    position: relative;
+    z-index: 2;
+    /* box-shadow: 0 8px 24px rgb(149 157 165 / 20%); */
+        /* position: relative; */
+        border: 1px solid #ddd !important;
+
+}
+.pro-head-min{
+    height: 200px;
+
+}
+
+
+.pro-body{
+
+    padding-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.pro-body-min{
+padding-top: 200px;
+}
+
+body{
+    background-color: #F0F2F5 !important;
+}
+
+.post{
+    background-color: #fff;
+    color: #1c1e21 !important;
+    border: 1px solid #ddd !important;
+    text-align: left;
+}
+
+.pro-head-img{
+   position: absolute;
+   bottom: 0;
+   padding: 10px 20%;
+}
+
+.pro-head-mainimg{
+    background-image: linear-gradient(to top, #ffffff, rgb(255 255 255), rgb(215 214 214 / 70%), rgb(124 122 122 / 40%), rgb(255 252 252 / 0%));
+    height: 100%;
+    text-align: center;
+}
+
+
+.pro-head-mainimg img {
+    padding: 0 5%;
+    height: 90%;
+    min-width: 90%;
+    border-bottom-left-radius: 102px;
+    border-bottom-right-radius: 102px;
+}
+
+.pro-banner {
+    padding: 0% 20%;
+    background-color: #FFF;
+    position: absolute;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+}
+
+.pro-head-img {
+    display: flex;
+    align-items: center;
+}
+
+body{
+    font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.pro-name{
+    padding-top: 60px ;
+    font-family: Helvetica, Arial, sans-serif !important;
+    font-size: 30px;
+    margin: 20px;
+    text-transform: uppercase;
+
+}
