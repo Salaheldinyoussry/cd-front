@@ -7,8 +7,8 @@ import ImageSelector from './ImageSelector'
 import { GET ,POST } from '../utils/API';
 import { toast } from 'react-toastify';
 
-export function PostWall({me}) {
-    const [posts, setPosts] = useState([]);
+export function PostWall({me, posts}) {
+    const [homePosts, setHomePosts] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
 
@@ -45,33 +45,34 @@ export function PostWall({me}) {
     }
 
     useEffect(() => {
-
-        if(me){
+        if(me) {
             GET('post').then((data) => {
-                setPosts(data.posts)
-          
-              }).catch((err) => {
+                setHomePosts(data.posts.map((post, index) => 
+                    <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                ))
+            })
+            .catch((err) => {
                 toast('Error Fetching Posts', {type: 'error'});
-                })
-                return  
+            })
+            return  
         }
+
         GET('image?type=regular').then((data) => {
           setImages(data.images.map((image) => image.url))
     
         })
 
         GET('post/feed').then((data) => {
-            setPosts(data.posts)
-      
-          }).catch((err) => {
+            setHomePosts(data.posts.map((post, index) => 
+                <Post key={index} id={index} userAvatar={userAvatar} post={post} />        
+            ))
+        })
+        .catch((err) => {
             toast('Error Fetching Posts', {type: 'error'});
-            })
-
-    
+        })
       
-      }, [me]);
+    }, [me, posts]);
 
-      
     // just for testing
 
     return (
@@ -90,9 +91,8 @@ export function PostWall({me}) {
             <h1>Create Post</h1>
             <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
 
-             <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+            <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
             <button id="submitBtn" onClick ={()=>{
-
                 let data = {
                     description: document.getElementById('description').value,
                     images: selectedImages
@@ -102,20 +102,14 @@ export function PostWall({me}) {
                     toast('Post Created Successfully');
                 }).catch((err) => {
                     toast('Error Creating Post', {type: 'error'});
-                })   
-
-
-
+                })  
                 document.getElementById('myDialog').close();
-            }} >Submit</button>
+
+            }} > Submit </button>
    
             </dialog>
 
-
-            {posts.map((post, index) => 
-                    <Post key={index} id={index} userAvatar={userAvatar}  post={post} />
-                            
-                )}
+            { posts.length!=0? posts:homePosts }
         </div>
     );
 }

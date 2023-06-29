@@ -1,0 +1,13 @@
+.Notifications {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Notification {
+    margin: 10px;
+    border-radius: 12px;
+    min-width: 700px;
+    max-width: 800px;
+    border-bottom: 1px solid #e7e7e7;
+}

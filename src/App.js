@@ -14,19 +14,17 @@ import {
 import { SignIn } from './compenents/SignIn/SignIn.js';
 import { SignUp } from './compenents/SignUp/SignUp.js';
 import { SideBar } from './compenents/SideBar/SideBar.js';
-import {AuthUtil} from "./compenents/utils/AuthProvider";
+import { AuthUtil } from "./compenents/utils/AuthProvider";
 
 import { Home } from './compenents/Home/Home.js';
-
-
 import { Profile } from './compenents/Profile/Profile.js';
 import { ImageMorphing } from './compenents/ImageMorphing/ImageMorphing.js';
 import { DataAugmentation } from './compenents/DataAugmentation/DataAugmentation.js';
 import { GenerateImage } from './compenents/GenerateImage/GenerateImage.js';
 import { SavedImages } from './compenents/SavedImages/SavedImages.js';
 import { DrawPlane } from './compenents/DrawPlane/DrawPlane.js';
+import { Notifications } from './compenents/Notifications/Notifications.js';
 import { BugReport } from './compenents/BugReport/BugReport.js';
-
 
 function App() {
   return (
@@ -52,15 +50,15 @@ function App() {
             }
           />
 
-                <Route path="/profile" element={<RequireAuth><SideBar/><Profile/> </RequireAuth>} > </Route>
-                {/* <Route path="/" element={<Home/>}></Route> */}
-                <Route path="/morphing" element={ <RequireAuth> <SideBar/> <ImageMorphing/> </RequireAuth> } > </Route>
-
-                <Route path="/augmentation" element={<RequireAuth> <SideBar/> <DataAugmentation/> </RequireAuth>}></Route>
-                <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
-                <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
-                <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
-                <Route path="/bug" element={<RequireAuth> <SideBar/> <BugReport/> </RequireAuth>}></Route>
+          <Route path="/profile" element={<RequireAuth><SideBar/><Profile/> </RequireAuth>} > </Route>
+          {/* <Route path="/" element={<Home/>}></Route> */}
+          <Route path="/morphing" element={ <RequireAuth> <SideBar/> <ImageMorphing/> </RequireAuth> } > </Route>
+          <Route path="/augmentation" element={<RequireAuth> <SideBar/> <DataAugmentation/> </RequireAuth>}></Route>
+          <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
+          <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
+          <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
+          <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
+          <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
 
       </Routes>
 
