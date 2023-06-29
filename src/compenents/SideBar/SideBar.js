@@ -18,8 +18,6 @@ export function SideBar() {
     const location = useLocation();
     const [user , setUser] = useState({});
     const [sidebar , setSidebar] = useState(false);
-
-
     
     useEffect(() => {
         GET('user').then((res) => {
@@ -29,8 +27,6 @@ export function SideBar() {
         }).catch((err) => {
             toast(err.message, {type: 'error'});
         });
-
-
 
         setSidebar (Array.from(document.querySelectorAll('.sidebar'))[0]);
         const navItems = Array.from(document.querySelectorAll('nav .nav-item'));
@@ -58,8 +54,6 @@ export function SideBar() {
 
     return (
         <div>
-
-
             <div className="body">
                 <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
                 <div className="sidebar">
