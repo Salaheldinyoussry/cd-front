@@ -44,11 +44,18 @@ export function PostWall({me, posts}) {
         setImages([url,...images]);
     }
 
+    function starPost(post, index, staredSet){
+        if(staredSet.has(post.id) ) return <Post key={index} id={index} userAvatar={userAvatar} post={post} stareded = {true}/>
+        return <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+    }
+
     useEffect(() => {
         if(me) {
             GET('post').then((data) => {
+                const staredSet = new Set(data.stared);
                 setHomePosts(data.posts.map((post, index) => 
-                    <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                    //<Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                    starPost(post, index, staredSet)
                 ))
             })
             .catch((err) => {
@@ -63,8 +70,10 @@ export function PostWall({me, posts}) {
         })
 
         GET('post/feed').then((data) => {
+            const staredSet = new Set(data.stared);
             setHomePosts(data.posts.map((post, index) => 
-                <Post key={index} id={index} userAvatar={userAvatar} post={post} />        
+                //<Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                starPost(post, index, staredSet)     
             ))
         })
         .catch((err) => {

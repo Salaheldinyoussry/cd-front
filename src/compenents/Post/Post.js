@@ -10,11 +10,12 @@ import {POST , GET} from '../utils/API'
 
 import Loader from '../Loader/Loader';
 
-export function Post({ userAvatar, username, post }) {
+export function Post({ userAvatar, username, post, stareded }) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
-    const [stared , setStared] = useState(false);
+    
+    const [stared , setStared] = useState(stareded);
 
     const [comment, setComment] = useState([]);
     

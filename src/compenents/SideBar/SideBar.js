@@ -63,7 +63,6 @@ export function SideBar() {
 
                     <div className="logo">
                         <img style={{borderRadius:"50%"}} src={avatar} alt="..."/>
-                        {console.log("koooooooooooooooooooo",user)}
                         <h3>{user ? user.name:""}</h3>
                     </div>
 

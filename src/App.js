@@ -105,7 +105,6 @@ function RequireAuth({ children }) {
   // const myCookie = Cookies.get('_ria');
  const st  = localStorage.getItem('_ria');
 
- console.log("dddddddddddddd",st);
 
   if (!st) {
     console.log("not logged in");
