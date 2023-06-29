@@ -51,11 +51,11 @@ export function Profile() {
             setEmail(response.email); setNewEmail(response.email);
             setJob(response.job); setNewJob(response.job);
             setPhone(response.phone); setNewPhone(response.phone);
-            //setProfileImage(response.profileImage);
+            setProfileImage(response.profileImage);
             sessionStorage.setItem('user', JSON.stringify(response));
         })
         
-    },[name, email, profileImage, coverImage]);
+    },[name, email, job, phone, profileImage, coverImage]);
     
     const [isNameDisabled, setIsNameDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
@@ -230,7 +230,7 @@ export function Profile() {
                         <button className="edit-icon" onClick={editJob}>
                             <i className="bx bx-pencil"></i>
                         </button>
-                        <input type="text" name="job" className="info-input" disabled={isJobDisabled} 
+                        <input type="text" name="job" className="info-input" value={newJob} disabled={isJobDisabled} 
                             onChange={(e) => {
                                 setNewJob(e.target.value);
                             }}
@@ -244,7 +244,7 @@ export function Profile() {
                         <button className="edit-icon" onClick={editPhone}>
                             <i className="bx bx-pencil"></i>
                         </button>
-                        <input type="text" name="phone" className="info-input" disabled={isPhoneDisabled} 
+                        <input type="text" name="phone" className="info-input" value={newPhone} disabled={isPhoneDisabled} 
                             onChange={(e) => {
                                 setNewPhone(e.target.value);
                             }}
