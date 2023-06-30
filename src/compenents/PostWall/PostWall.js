@@ -11,6 +11,8 @@ export function PostWall({me, posts}) {
     const [homePosts, setHomePosts] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
+    const [skip, setSkip] = useState(0);
+    const [initialPostsFetched, setInitialPostsFetched] = useState(false);
 
     // just for testing
     const userAvatar = avatar;
@@ -50,37 +52,42 @@ export function PostWall({me, posts}) {
     }
 
     useEffect(() => {
-        if(me) {
-            GET('post').then((data) => {
+        if(initialPostsFetched){
+            if(me) {
+                GET(`post?skip=${skip}`).then((data) => {
+                    const staredSet = new Set(data.stared);
+                    setHomePosts(prevPosts => [...prevPosts, ...data.posts.map((post, index) => 
+                        starPost(post, index, staredSet)
+                    )]);
+                    setSkip(prevSkip => prevSkip + data.posts.length);
+                })
+                .catch((err) => {
+                    toast('Error Fetching Posts', {type: 'error'});
+                })
+                return  
+            }
+        
+            GET('image?type=regular').then((data) => {
+                setImages(data.images.map((image) => image.url));
+            })
+        
+            GET(`post/feed?skip=${skip}`).then((data) => {
                 const staredSet = new Set(data.stared);
-                setHomePosts(data.posts.map((post, index) => 
-                    //<Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                setHomePosts(prevPosts => [...prevPosts, ...data.posts.map((post, index) => 
                     starPost(post, index, staredSet)
-                ))
+                )]);
+                setSkip(prevSkip => prevSkip + data.posts.length);
             })
             .catch((err) => {
                 toast('Error Fetching Posts', {type: 'error'});
             })
-            return  
         }
+        else
+            setInitialPostsFetched(true);
 
-        GET('image?type=regular').then((data) => {
-          setImages(data.images.map((image) => image.url))
+
+    }, [me, skip, initialPostsFetched]);
     
-        })
-
-        GET('post/feed').then((data) => {
-            const staredSet = new Set(data.stared);
-            setHomePosts(data.posts.map((post, index) => 
-                //<Post key={index} id={index} userAvatar={userAvatar} post={post} />
-                starPost(post, index, staredSet)     
-            ))
-        })
-        .catch((err) => {
-            toast('Error Fetching Posts', {type: 'error'});
-        })
-      
-    }, [me, posts]);
 
     // just for testing
 
