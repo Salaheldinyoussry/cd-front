@@ -7,7 +7,7 @@ import ImageSelector from './ImageSelector'
 import { GET ,POST } from '../utils/API';
 import { toast } from 'react-toastify';
 
-export function PostWall({me, posts}) {
+export function PostWall({ me , posts , profileId , showProfile }) {
     const [homePosts, setHomePosts] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
@@ -57,6 +57,18 @@ export function PostWall({me, posts}) {
             return  
         }
 
+        if(profileId) {
+            POST('post', { id: profileId }).then((data) => {
+                setHomePosts(data.posts.map((post, index) => 
+                    <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                ))
+            })
+            .catch((err) => {
+                toast('Error Fetching Posts', {type: 'error'});
+            })
+            return 
+        }
+
         GET('image?type=regular').then((data) => {
           setImages(data.images.map((image) => image.url))
     
@@ -64,7 +76,7 @@ export function PostWall({me, posts}) {
 
         GET('post/feed').then((data) => {
             setHomePosts(data.posts.map((post, index) => 
-                <Post key={index} id={index} userAvatar={userAvatar} post={post} />        
+                <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />        
             ))
         })
         .catch((err) => {
@@ -77,12 +89,13 @@ export function PostWall({me, posts}) {
 
     return (
         <div className="post-wall">
-           {!me && <div className='add-post' onClick={()=>{
-                document.getElementById('myDialog').showModal();
-            }}>
+            {!me && !profileId && 
+                <div className='add-post' onClick={()=>{
+                    document.getElementById('myDialog').showModal();
+                }}>
                 New Post
-
-            </div>}
+                </div>
+            }
 
             <dialog id="myDialog">
             <button id="closeBtn" onClick ={()=>{

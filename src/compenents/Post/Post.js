@@ -10,17 +10,14 @@ import {POST , GET} from '../utils/API'
 
 import Loader from '../Loader/Loader';
 
-export function Post({ userAvatar, username, post }) {
+export function Post({ userAvatar, post , showProfile }) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [stared , setStared] = useState(false);
-
     const [comment, setComment] = useState([]);
     
     const [loading, setLoading] = useState(false);
-
-
 
   
     const openImageViewer = useCallback((index) => {
@@ -33,6 +30,7 @@ export function Post({ userAvatar, username, post }) {
       setIsViewerOpen(false);
       
     };
+
     function rate() {
         post.stars = (post.stars || 0)
 
@@ -44,10 +42,7 @@ export function Post({ userAvatar, username, post }) {
 
         post.stars = (stared ? post.stars - 1 : post.stars + 1)
 
-
-
         setStared(!stared);
-
     }
 
     function addComment(e) {
@@ -59,14 +54,11 @@ export function Post({ userAvatar, username, post }) {
 
             setComment([...comment, { text, userId: JSON.parse(sessionStorage.getItem('user')) }])
              
-            
             console.log(res)
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err)
-        }
-        )
-
-
+        })
     }
 
     // function display(images){
@@ -87,8 +79,8 @@ export function Post({ userAvatar, username, post }) {
     //     }
     // }
 
-    function handleComments (){
-        if(showComments){
+    function handleComments () {
+        if(showComments) {
             setShowComments(false)
         }
         else{
@@ -101,12 +93,9 @@ export function Post({ userAvatar, username, post }) {
                 console.log(err)
                 
             })
-
-
             setShowComments(true)
         }
     }
-
 
     return (
         <div className="post">
@@ -118,7 +107,7 @@ export function Post({ userAvatar, username, post }) {
                 </div>
 
                 <div className="user-data">
-                    <div className="username"> {post.userId?.name} </div>
+                    <div className="username" id={post.userId?.id} onClick={showProfile}> {post.userId?.name} </div>
                     <div className="post-date"> {new Date(post.createdAt).toUTCString()} </div>
                 </div>
             </div>
@@ -129,33 +118,30 @@ export function Post({ userAvatar, username, post }) {
 
             <div className="">
             <div>
+                <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
+                    {post.images && post.images .map((img, index) => (
+                        <img
+                        src={ img }
+                        onClick={ () => openImageViewer(index) }
+                        width={"100%"}
+                        key={ index }
+                        style={{ margin: '2px' }}
+                        alt=""
+                        />
+                    ))}
+                </div>
 
-                        <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
-                        {post.images && post.images .map((img, index) => (
-                            <img
-                            src={ img }
-                            onClick={ () => openImageViewer(index) }
-                            width={"100%"}
-                            key={ index }
-                            style={{ margin: '2px' }}
-                            alt=""
-                            />
-                        ))}
-                        </div>
-
-
-
-                        {isViewerOpen &&<div style={{zIndex:1000000000}}> 
-                            <ImageViewer
-                            src={ post.images }
-                            currentIndex={ currentImage }
-                            disableScroll={ false }
-                            closeOnClickOutside={ true }
-                            onClose={ closeImageViewer }
-                            />
-                            </div>
-                        }
-                        </div>
+                {isViewerOpen &&<div style={{zIndex:1000000000}}> 
+                    <ImageViewer
+                    src={ post.images }
+                    currentIndex={ currentImage }
+                    disableScroll={ false }
+                    closeOnClickOutside={ true }
+                    onClose={ closeImageViewer }
+                    />
+                    </div>
+                }
+                </div>
             </div>
 
             <div className="post-info">
@@ -171,24 +157,23 @@ export function Post({ userAvatar, username, post }) {
 
             
             {showComments && <div className='fade-in'>
-         <div className='hline'></div>
+                <div className='hline'></div>
 
-            {loading && <Loader/>}
-            {
-                comment && comment.map((c) =>  <Comment comment={c} />)
-            }
-           
-
-            <div className="comment-input">
-                <div className="user-avatar" style={{margin:"15px"}}>
-                    <img src={JSON.parse(sessionStorage.getItem("user"))&& JSON.parse(sessionStorage.getItem("user")).avatar || avatar} alt="avatar"></img>
+                {loading && <Loader/>}
+                {
+                    comment && comment.map((c) =>  <Comment comment={c} />)
+                }
+            
+                <div className="comment-input">
+                    <div className="user-avatar" style={{margin:"15px"}}>
+                        <img src={JSON.parse(sessionStorage.getItem("user"))&& JSON.parse(sessionStorage.getItem("user")).avatar || avatar} alt="avatar"></img>
+                    </div>
+                    <form onSubmit={addComment}>
+                        <input name="text" type="text" maxLength="200" placeholder="Write you comment here"></input>
+                        <button className="submit-button" type="submit">+
+                        </button>
+                    </form>
                 </div>
-                <form onSubmit={addComment}>
-                    <input name="text" type="text" maxLength="200" placeholder="Write you comment here"></input>
-                    <button className="submit-button" type="submit">+
-                    </button>
-                </form>
-            </div>
             </ div>}
         </div>
     );

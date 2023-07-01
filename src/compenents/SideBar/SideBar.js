@@ -16,8 +16,8 @@ import { BugReport } from '../BugReport/BugReport.js';
 
 export function SideBar() {
     const location = useLocation();
-    const [user , setUser] = useState({});
-    const [sidebar , setSidebar] = useState(false);
+    const [user, setUser] = useState({});
+    const [sidebar, setSidebar] = useState(false);
     
     useEffect(() => {
         GET('user').then((res) => {
@@ -63,7 +63,6 @@ export function SideBar() {
 
                     <div className="logo">
                         <img style={{borderRadius:"50%"}} src={avatar} alt="..."/>
-                        {console.log("koooooooooooooooooooo",user)}
                         <h3>{user ? user.name:""}</h3>
                     </div>
 

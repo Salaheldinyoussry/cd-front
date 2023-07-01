@@ -1,26 +1,39 @@
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 
 import './Notifications.css';
 import avatar from '../../assets/avatar.png';
+import { GET } from '../utils/API';
 
 export function Notifications() {
     const [currnetNotifications, setCurrnetNotifications] = useState(null);
-    
-    //setCurrnetNotifications();
 
+    useEffect(() => {
+      GET('notify').then((response) => {
+        setCurrnetNotifications(response);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+      
+    }, []);
 
     return (
-      <div className="Notifications">
-        <Notifications image={avatar} description="test" />    
+      <div className="notifications">
+        { currnetNotifications &&
+          currnetNotifications.map((notify, index) => 
+            <Notification key={index} id={index} image={notify.image} description={notify.description} />      
+          ) 
+        }
       </div>
     );
 }
 
 function Notification({ image, description }) {
   return (
-    <div className="Notification">
-      <img src={image} />
-      <label> {description} </label>
+    <div className="notification">
+      <img className="notify-image" src={image} alt="avatar" />
+      <label className="description"> {description} </label>
     </div>
   );
 }
