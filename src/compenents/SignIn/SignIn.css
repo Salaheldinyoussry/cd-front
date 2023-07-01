@@ -27,6 +27,7 @@
 
 .sign-in-button {
     margin-bottom: 25px;
+    background-color: var(--theme-color);
 }
 
 .left-margin {

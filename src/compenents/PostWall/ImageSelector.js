@@ -1,7 +1,7 @@
 import React, { useState ,useEffect } from 'react';
 import {toast} from 'react-toastify';
 
-function ImageSelector({ images , addImage , selectedImages , setSelectedImages}) {
+function ImageSelector({ images , addImage , selectedImages , setSelectedImages }) {
 
   const handleImageSelect = (image) => {
     if(selectedImages.includes(image)){
@@ -33,7 +33,8 @@ function ImageSelector({ images , addImage , selectedImages , setSelectedImages}
       const data = await response.json();
       addImage(data.url)
       toast(`File uploaded successfully`);
-    } else {
+    } 
+    else {
       toast(`Error uploading file: ${response.statusText}`,{type:'error'});
     }
   };

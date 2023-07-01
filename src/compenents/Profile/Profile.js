@@ -72,7 +72,7 @@ export function Profile({ profileId }) {
             });
         }
         
-    },[profileId, name, email, job, phone, avatar, cover]);
+    },[profileId, name, email, job, phone]);
     
     const [isNameDisabled, setIsNameDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
@@ -81,12 +81,18 @@ export function Profile({ profileId }) {
 
     async function editAvatar(e) {
         let selectedFile = e.target.files[0];
-        const response = editImage(selectedFile, "avatar");
+        const response = await editImage(selectedFile);
         
         // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
             setAvatar(data.url);
+            const newUser = {
+                editType: "avatar",
+                id: id,
+                avatar: data.url
+            };
+            editInfo(newUser);
             toast(`File uploaded successfully`);
         } 
         else {
@@ -96,12 +102,18 @@ export function Profile({ profileId }) {
 
     async function editCover(e) {
         let selectedFile = e.target.files[0];
-        const response = editImage(selectedFile, "cover");
+        const response = await editImage(selectedFile);
         
         // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
             setCover(data.url);
+            const newUser = {
+                editType: "cover",
+                id: id,
+                cover: data.url
+            };
+            editInfo(newUser);
             toast(`File uploaded successfully`);
         } 
         else {
@@ -109,7 +121,7 @@ export function Profile({ profileId }) {
         }
     }
 
-    async function editImage(selectedFile, photoEdited) {
+    async function editImage(selectedFile) {
         const formData = new FormData();
         formData.append('file', selectedFile);
         //formData.append('photoEdited', photoEdited);
@@ -202,18 +214,20 @@ export function Profile({ profileId }) {
                             <input type="file" id="pro-image" name="image" accept="image/*" onChange={editAvatar}/>
                         }
                     </div>
-                    <div className="wrapper">
-                        <input type="text" className="pro-name" value={newName} disabled={isNameDisabled}
-                            onChange={(e) => {
-                                setNewName(e.target.value);
-                            }}
-                        />
-                        {!profileId &&     
+                    <input type="text" className="pro-name" value={newName} disabled={isNameDisabled}
+                        onChange={(e) => {
+                            setNewName(e.target.value);
+                        }}
+                    />
+                    {!profileId &&   
+                        <div className="wrapper">  
                             <button className="edit-icon" onClick={editName}>
                                 <i className="bx bx-pencil"></i>
                             </button>
-                        }
-                    </div>
+                            <input type="file" className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
+                        </div>  
+                    }  
+                    
                 </div>
             </div>
 

@@ -1,18 +1,10 @@
-import { useEffect, useState} from 'react';
-import { Route, Routes, Link , useLocation,} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link , useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { GET } from '../utils/API';
-import './SideBar.css';
-import avatar from '../../assets/avatar.png';
 
-import { Profile } from '../Profile/Profile.js';
-import { Home } from '../Home/Home.js';
-import { ImageMorphing } from '../ImageMorphing/ImageMorphing.js';
-import { DataAugmentation } from '../DataAugmentation/DataAugmentation.js';
-import { GenerateImage } from '../GenerateImage/GenerateImage.js';
-import { SavedImages } from '../SavedImages/SavedImages.js';
-import { DrawPlane } from '../DrawPlane/DrawPlane.js';
-import { BugReport } from '../BugReport/BugReport.js';
+import './SideBar.css';
+import { GET } from '../utils/API';
+import avatar from '../../assets/avatar.png';
 
 export function SideBar() {
     const location = useLocation();
@@ -132,7 +124,6 @@ export function SideBar() {
                             </li>
                         </ul>
                     </nav>
-
                 </div>
             </div>
         </div>

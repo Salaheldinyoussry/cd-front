@@ -58,7 +58,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
         }
 
         if(profileId) {
-            POST('post', { id: profileId }).then((data) => {
+            POST('postX', { id: profileId }).then((data) => {
                 setHomePosts(data.posts.map((post, index) => 
                     <Post key={index} id={index} userAvatar={userAvatar} post={post} />
                 ))
@@ -85,8 +85,6 @@ export function PostWall({ me , posts , profileId , showProfile }) {
       
     }, [me, posts]);
 
-    // just for testing
-
     return (
         <div className="post-wall">
             {!me && !profileId && 
@@ -105,15 +103,17 @@ export function PostWall({ me , posts , profileId , showProfile }) {
             <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
 
             <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+            
             <button id="submitBtn" onClick ={()=>{
                 let data = {
                     description: document.getElementById('description').value,
                     images: selectedImages
                 }
-                POST('post',data).then((data) => {
-                    console.log(data)
+                POST('post', data).then((data) => {
+                    console.log("post data test" , data);
                     toast('Post Created Successfully');
-                }).catch((err) => {
+                })
+                .catch((err) => {
                     toast('Error Creating Post', {type: 'error'});
                 })  
                 document.getElementById('myDialog').close();

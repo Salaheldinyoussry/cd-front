@@ -112,9 +112,9 @@ export function Post({ userAvatar, post , showProfile }) {
                 </div>
             </div>
 
-                <div className="post-text" style={{padding:"10px 20px"}}>
-                    {post.description}
-                </div>
+            <div className="post-text" style={{padding:"10px 20px"}}>
+                {post.description}
+            </div>
 
             <div className="">
             <div>
