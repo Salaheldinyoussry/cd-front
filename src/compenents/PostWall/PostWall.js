@@ -11,6 +11,8 @@ export function PostWall({ me , posts , profileId , showProfile }) {
     const [homePosts, setHomePosts] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
+    const [skip, setSkip] = useState(0);
+    const [initialPostsFetched, setInitialPostsFetched] = useState(false);
 
     // just for testing
     const userAvatar = avatar;
@@ -44,46 +46,59 @@ export function PostWall({ me , posts , profileId , showProfile }) {
         setImages([url,...images]);
     }
 
+    function starPost(post, index, staredSet){
+        if(staredSet.has(post.id) ) return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} stareded={true}/>
+        return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />
+    }
+
     useEffect(() => {
-        if(me) {
-            GET('post').then((data) => {
-                setHomePosts(data.posts.map((post, index) => 
-                    <Post key={index} id={index} userAvatar={userAvatar} post={post} />
-                ))
+        if(initialPostsFetched) {
+            if(me) {
+                GET(`post?skip=${skip}`).then((data) => {
+                    const staredSet = new Set(data.stared);
+                    setHomePosts(prevPosts => [...prevPosts, ...data.posts.map((post, index) => 
+                        starPost(post, index, staredSet)
+                    )]);
+                    setSkip(prevSkip => prevSkip + data.posts.length);
+                })
+                .catch((err) => {
+                    toast('Error Fetching Posts', {type: 'error'});
+                })
+                return  
+            }
+          
+          if(profileId) {
+              POST('postX', { id: profileId }).then((data) => {
+                  setHomePosts(data.posts.map((post, index) => 
+                      <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                  ))
+              })
+              .catch((err) => {
+                  toast('Error Fetching Posts', {type: 'error'});
+              })
+              return 
+          }
+        
+            GET('image?type=regular').then((data) => {
+                setImages(data.images.map((image) => image.url));
+            })
+        
+            GET(`post/feed?skip=${skip}`).then((data) => {
+                const staredSet = new Set(data.stared);
+                setHomePosts(prevPosts => [...prevPosts, ...data.posts.map((post, index) => 
+                    starPost(post, index, staredSet)
+                )]);
+                setSkip(prevSkip => prevSkip + data.posts.length);
             })
             .catch((err) => {
                 toast('Error Fetching Posts', {type: 'error'});
             })
-            return  
         }
+        else
+            setInitialPostsFetched(true);
 
-        if(profileId) {
-            POST('postX', { id: profileId }).then((data) => {
-                setHomePosts(data.posts.map((post, index) => 
-                    <Post key={index} id={index} userAvatar={userAvatar} post={post} />
-                ))
-            })
-            .catch((err) => {
-                toast('Error Fetching Posts', {type: 'error'});
-            })
-            return 
-        }
-
-        GET('image?type=regular').then((data) => {
-          setImages(data.images.map((image) => image.url))
+    }, [me, skip, initialPostsFetched]);
     
-        })
-
-        GET('post/feed').then((data) => {
-            setHomePosts(data.posts.map((post, index) => 
-                <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />        
-            ))
-        })
-        .catch((err) => {
-            toast('Error Fetching Posts', {type: 'error'});
-        })
-      
-    }, [me, posts]);
 
     return (
         <div className="post-wall">
