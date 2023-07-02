@@ -19,7 +19,7 @@ export function SignIn() {
     POST("login",user).then((response) => {
       console.log(response);
       localStorage.setItem('_ria', response.token);
-      navigate('/');
+      navigate('/home');
     })
     .catch((error) => {
       console.log(error);

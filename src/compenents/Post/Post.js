@@ -1,24 +1,22 @@
-import './Post.css';
-
-import avatar from '../../assets/avatar.png';
-
-import { Comment } from '../Comment/Comment.js';
-import { useEffect , useState,useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import ImageViewer from 'react-simple-image-viewer';
 
-import {POST , GET} from '../utils/API'
-
+import './Post.css';
+import { Comment } from '../Comment/Comment.js';
+import { POST , GET } from '../utils/API';
 import Loader from '../Loader/Loader';
+import avatar from '../../assets/avatar.png';
 
-export function Post({ userAvatar, post , showProfile }) {
+export function Post({ userAvatar, post, showProfile, isStared }) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
-    const [stared , setStared] = useState(false);
+    const [stared , setStared] = useState(isStared);
     const [comment, setComment] = useState([]);
     
     const [loading, setLoading] = useState(false);
 
+    const maxImagesCount = 4;
   
     const openImageViewer = useCallback((index) => {
       setCurrentImage(index);
@@ -32,16 +30,17 @@ export function Post({ userAvatar, post , showProfile }) {
     };
 
     function rate() {
-        post.stars = (post.stars || 0)
+        post.stars = (post.stars || 0);
 
-        POST('post/star', { postId: post.id, star: !stared , stars:post.stars }).then((res) => {
+        POST('post/star', { postId: post.id, star: !stared, stars: post.stars, userId: sessionStorage.getItem("user").id })
+        .then((res) => {
             console.log(res)
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err)
         })
 
-        post.stars = (stared ? post.stars - 1 : post.stars + 1)
-
+        post.stars = (stared ? post.stars - 1 : post.stars + 1);
         setStared(!stared);
     }
 
@@ -97,6 +96,33 @@ export function Post({ userAvatar, post , showProfile }) {
         }
     }
 
+    function showImages(img, index, length){
+        if(index < maxImagesCount - 1 || (index == (maxImagesCount - 1) && length == maxImagesCount)){
+            return <img
+                    src={ img }
+                    onClick={ () => openImageViewer(index) }
+                    width={"100%"}
+                    key={ index }
+                    style={{ margin: '2px' }}
+                    alt=""/>
+        }
+        else if(index == (maxImagesCount - 1)) {
+            let remaining = length - maxImagesCount;
+            return <div style={{position: 'relative', 'text-align': 'center'}}>
+                <h3 style={{position:'absolute', zIndex : '1', color : 'white', 'font-size' : '380%', 'font-weight': 'normal', 
+                top: '50%', left: '50%', transform: 'translateX(-50%) translateY(-50%)' }}>+{remaining}</h3>
+                    <img
+                        src={ img }
+                        onClick={ () => openImageViewer(index) }
+                        width={"100%"}
+                        key={ index }
+                        style={{ margin: '2px', background: 'rgba(0,0,0,0.46)', filter : 'brightness(60%)' }}
+                        alt=""/>
+            </div>
+        }
+        return null
+    }
+
     return (
         <div className="post">
             <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
@@ -119,16 +145,7 @@ export function Post({ userAvatar, post , showProfile }) {
             <div className="">
             <div>
                 <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
-                    {post.images && post.images .map((img, index) => (
-                        <img
-                        src={ img }
-                        onClick={ () => openImageViewer(index) }
-                        width={"100%"}
-                        key={ index }
-                        style={{ margin: '2px' }}
-                        alt=""
-                        />
-                    ))}
+                    { post.images && post.images.map((img, index) => (showImages(img, index, post.images.length))) }
                 </div>
 
                 {isViewerOpen &&<div style={{zIndex:1000000000}}> 

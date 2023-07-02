@@ -40,13 +40,12 @@
 :root {
   --light-brown-color: rgba(150, 111, 51, 0.6);
   --brown-color: rgb(150, 111, 51);
-  --very-light-blue-color: rgba(173, 216, 230, 0.2);
-  --light-blue-color: rgba(51, 91, 150, 0.8);
+  --light-blue-color: rgba(51, 91, 150, 0);
   --highlight-blue-color: rgba(173, 216, 230, 0.6);
   --theme-color: #604d92;
+  --very-light-theme-color: rgb(225, 220, 231);
   --light-gray-color: #a3a3a32d;
   --gray-color:	rgba(169, 169, 169, 0.6);
-
   --left-margin: 140px;
 }
 
@@ -54,7 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--very-light-blue-color);
+  background-color: var(--very-light-theme-color);
   height: 90vh;
 }
 
