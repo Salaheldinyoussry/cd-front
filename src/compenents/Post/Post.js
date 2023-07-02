@@ -10,7 +10,7 @@ import {POST , GET} from '../utils/API'
 
 import Loader from '../Loader/Loader';
 
-export function Post({ userAvatar, username, post, stareded }) {
+export function Post({ userAvatar, username, post, stareded, showProfile}) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -21,10 +21,8 @@ export function Post({ userAvatar, username, post, stareded }) {
     
     const [loading, setLoading] = useState(false);
 
+
     const maxImagesCount = 4;
-
-
-
   
     const openImageViewer = useCallback((index) => {
       setCurrentImage(index);
@@ -36,6 +34,7 @@ export function Post({ userAvatar, username, post, stareded }) {
       setIsViewerOpen(false);
       
     };
+
     function rate() {
         post.stars = (post.stars || 0)
         POST('post/star', { postId: post.id, star: !stared , stars:post.stars, userId: sessionStorage.getItem("user").id}).then((res) => {
@@ -46,10 +45,7 @@ export function Post({ userAvatar, username, post, stareded }) {
 
         post.stars = (stared ? post.stars - 1 : post.stars + 1)
 
-
-
         setStared(!stared);
-
     }
 
     function addComment(e) {
@@ -61,14 +57,11 @@ export function Post({ userAvatar, username, post, stareded }) {
 
             setComment([...comment, { text, userId: JSON.parse(sessionStorage.getItem('user')) }])
              
-            
             console.log(res)
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err)
-        }
-        )
-
-
+        })
     }
 
     // function display(images){
@@ -89,8 +82,8 @@ export function Post({ userAvatar, username, post, stareded }) {
     //     }
     // }
 
-    function handleComments (){
-        if(showComments){
+    function handleComments () {
+        if(showComments) {
             setShowComments(false)
         }
         else{
@@ -103,8 +96,6 @@ export function Post({ userAvatar, username, post, stareded }) {
                 console.log(err)
                 
             })
-
-
             setShowComments(true)
         }
     }
@@ -134,7 +125,6 @@ export function Post({ userAvatar, username, post, stareded }) {
         return null
     }
 
-
     return (
         <div className="post">
             <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
@@ -145,17 +135,30 @@ export function Post({ userAvatar, username, post, stareded }) {
                 </div>
 
                 <div className="user-data">
-                    <div className="username"> {post.userId?.name} </div>
+                    <div className="username" id={post.userId?.id} onClick={showProfile}> {post.userId?.name} </div>
                     <div className="post-date"> {new Date(post.createdAt).toUTCString()} </div>
                 </div>
             </div>
 
-                <div className="post-text" style={{padding:"10px 20px"}}>
-                    {post.description}
-                </div>
+            <div className="post-text" style={{padding:"10px 20px"}}>
+                {post.description}
+            </div>
 
             <div className="">
             <div>
+                <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
+                    {post.images && post.images .map((img, index) => (
+                        <img
+                        src={ img }
+                        onClick={ () => openImageViewer(index) }
+                        width={"100%"}
+                        key={ index }
+                        style={{ margin: '2px' }}
+                        alt=""
+                        />
+                    ))}
+                </div>
+
 
                         <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
                         {post.images && post.images.map((img, index) => ( showImages(img, index, post.images.length) ))}
@@ -189,24 +192,23 @@ export function Post({ userAvatar, username, post, stareded }) {
 
             
             {showComments && <div className='fade-in'>
-         <div className='hline'></div>
+                <div className='hline'></div>
 
-            {loading && <Loader/>}
-            {
-                comment && comment.map((c) =>  <Comment comment={c} />)
-            }
-           
-
-            <div className="comment-input">
-                <div className="user-avatar" style={{margin:"15px"}}>
-                    <img src={JSON.parse(sessionStorage.getItem("user"))&& JSON.parse(sessionStorage.getItem("user")).avatar || avatar} alt="avatar"></img>
+                {loading && <Loader/>}
+                {
+                    comment && comment.map((c) =>  <Comment comment={c} />)
+                }
+            
+                <div className="comment-input">
+                    <div className="user-avatar" style={{margin:"15px"}}>
+                        <img src={JSON.parse(sessionStorage.getItem("user"))&& JSON.parse(sessionStorage.getItem("user")).avatar || avatar} alt="avatar"></img>
+                    </div>
+                    <form onSubmit={addComment}>
+                        <input name="text" type="text" maxLength="200" placeholder="Write you comment here"></input>
+                        <button className="submit-button" type="submit">+
+                        </button>
+                    </form>
                 </div>
-                <form onSubmit={addComment}>
-                    <input name="text" type="text" maxLength="200" placeholder="Write you comment here"></input>
-                    <button className="submit-button" type="submit">+
-                    </button>
-                </form>
-            </div>
             </ div>}
         </div>
     );

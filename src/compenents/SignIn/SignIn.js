@@ -1,10 +1,9 @@
-import './SignIn.css';
-
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
+import './SignIn.css';
 import { TitleBar } from '../TitleBar/TitleBar.js';
-import {POST} from "../utils/API";
-import {toast} from 'react-toastify';
+import { POST } from "../utils/API";
 
 export function SignIn() {
   const navigate = useNavigate();
@@ -16,15 +15,15 @@ export function SignIn() {
       "email": email,
       "password": password
     }
+
     POST("login",user).then((response) => {
       console.log(response);
       localStorage.setItem('_ria', response.token);
       navigate('/');
-    } 
-    ).catch((error) => {
+    })
+    .catch((error) => {
       console.log(error);
       toast("Invalid password or Email", { type: 'error' });
-
     });
   }
 

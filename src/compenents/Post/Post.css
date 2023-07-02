@@ -28,6 +28,17 @@
    font-size: 1rem;
 }
 
+.username:hover {
+   cursor: pointer;
+   text-decoration: underline;
+}
+
+.username:active {
+   cursor: pointer;
+   text-decoration: underline;
+   color: gray; 
+}
+
 .post-date {
    color: #616770;
    font-size: 0.8rem;

@@ -29,43 +29,40 @@ import { BugReport } from './compenents/BugReport/BugReport.js';
 function App() {
   return (
     <div className="App">
-    <AuthProvider>
+      <AuthProvider>
 
-      <Routes>
-        {/* <Route path="/" element={<SignIn/>}></Route>
-        <Route path="/signUp" element={<SignUp/>}></Route>
-        <Route path="/home/*" element={<SideBar/>}></Route> */}
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-
-
-
-        <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <SideBar/>
-                <Home />
-              </RequireAuth>
-            }
-          />
-
-          <Route path="/profile" element={<RequireAuth><SideBar/><Profile/> </RequireAuth>} > </Route>
-          {/* <Route path="/" element={<Home/>}></Route> */}
-          <Route path="/morphing" element={ <RequireAuth> <SideBar/> <ImageMorphing/> </RequireAuth> } > </Route>
-          <Route path="/augmentation" element={<RequireAuth> <SideBar/> <DataAugmentation/> </RequireAuth>}></Route>
-          <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
-          <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
-          <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
-          <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
-          <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
-
-      </Routes>
-
-    </AuthProvider>
+        <Routes>
+          {/* <Route path="/" element={<SignIn/>}></Route>
+          <Route path="/signUp" element={<SignUp/>}></Route>
+          <Route path="/home/*" element={<SideBar/>}></Route> */}
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
 
 
 
+          <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <SideBar/>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+
+            <Route path="/profile" element={<RequireAuth><SideBar/><Profile/> </RequireAuth>} > </Route>
+            {/* <Route path="/" element={<Home/>}></Route> */}
+            <Route path="/morphing" element={ <RequireAuth> <SideBar/> <ImageMorphing/> </RequireAuth> } > </Route>
+            <Route path="/augmentation" element={<RequireAuth> <SideBar/> <DataAugmentation/> </RequireAuth>}></Route>
+            <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
+            <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
+            <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
+            <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
+            <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
+
+        </Routes>
+
+      </AuthProvider>
 
     </div>
   );

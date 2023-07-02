@@ -1,13 +1,9 @@
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 import './SignUp.css';
 import { TitleBar } from '../TitleBar/TitleBar.js';
-
-import {POST} from '../utils/API.js';
-import {toast} from 'react-toastify';
-import {
-  useNavigate,
-
-} from "react-router-dom";
-
+import { POST } from '../utils/API.js';
 
 export function SignUp() {
   let navigate = useNavigate();
@@ -18,7 +14,8 @@ export function SignUp() {
     const email = document.getElementById("emailst").value;
     const password = document.getElementById("passwordst").value;
     const confirmpassword = document.getElementById("confirm-passwordst").value;
-    if (password != confirmpassword) {
+
+    if(password != confirmpassword) {
       alert("Passwords do not match");
       return;
     }
@@ -28,11 +25,12 @@ export function SignUp() {
       "name": firstname + " " + secondname
     }
 
-    POST("signup",user).then((response) => {
+    POST("signup", user).then((response) => {
       console.log(response);
       toast("Account created successfully", { type: 'success' });
       navigate('/login');
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.log(error);
       toast("Account creation failed", { type: 'error' });
     });

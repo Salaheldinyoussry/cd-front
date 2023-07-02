@@ -1,21 +1,15 @@
 import React, { useState ,useEffect } from 'react';
 import {toast} from 'react-toastify';
 
-import { GET } from '../utils/API';
-
-function ImageSelector({ images , addImage , selectedImages , setSelectedImages}) {
+function ImageSelector({ images , addImage , selectedImages , setSelectedImages }) {
 
   const handleImageSelect = (image) => {
     if(selectedImages.includes(image)){
       setSelectedImages(selectedImages.filter((selectedImage) => selectedImage !== image));
-        return
+      return
     }
-
     setSelectedImages([...selectedImages, image]);
   };
-
-
-
 
   const handleFileInputChange = async (event) => {
     const selectedFile = event.target.files[0];
@@ -26,24 +20,23 @@ function ImageSelector({ images , addImage , selectedImages , setSelectedImages}
     formData.append('file', selectedFile);
 
     // Send the file upload request to the Sails.js server using the fetch API
-    const response = await fetch(process.env.REACT_APP_API_BASE_URL+ 'image/upload', {
+    const response = await fetch(/*process.env.REACT_APP_API_BASE_URL*/ "http://localhost:1337/" + 'image/upload', {
       method: 'POST',
       body: formData,
       headers: new Headers({
         'Authorization': `Bearer ${localStorage.getItem('_ria')}`,
       })
-
     });
 
     // Handle the response from the Sails.js server
-    if (response.ok) {
+    if(response.ok) {
       const data = await response.json();
       addImage(data.url)
       toast(`File uploaded successfully`);
-    } else {
+    } 
+    else {
       toast(`Error uploading file: ${response.statusText}`,{type:'error'});
     }
-
   };
 
   return (
@@ -56,10 +49,10 @@ function ImageSelector({ images , addImage , selectedImages , setSelectedImages}
           onImageSelect={handleImageSelect}
         />
       ))}
-                  <label class="styled-file-input" for="image">
-                    <div className='plus'> + </div>
-    <input type="file" id="image" name="image" accept="image/*" onChange={handleFileInputChange}/>
-  </label>
+      <label class="styled-file-input" for="image">
+        <div className='plus'> + </div>
+        <input type="file" id="image" name="image" accept="image/*" onChange={handleFileInputChange}/>
+      </label>
     </div>
   );
 }
@@ -72,8 +65,7 @@ function Image({ image, isSelected, onImageSelect }) {
   return (
     <div style={{position:"relative"}}>
       <img style={{width:'200px' , height:"200px"}} src={image} alt={''} />
-        <input className='img-ck' type="checkbox"  onChange={handleCheckboxChange} />
-        
+      <input className='img-ck' type="checkbox" onChange={handleCheckboxChange} />
     </div>
   );
 }

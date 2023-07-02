@@ -28,4 +28,5 @@
 
 .sign-up-button {
     margin-bottom: 25px;
+    background-color: var(--theme-color);
 }

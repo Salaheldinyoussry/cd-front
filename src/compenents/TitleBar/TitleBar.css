@@ -3,7 +3,7 @@
     justify-content: left;
     align-items: center;
     color: white;
-    background-color: var(--blue-color);
+    background-color: var(--theme-color);
     font-family: 'Lucida Handwriting', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
     font-size: 28px;
     padding: 10px;

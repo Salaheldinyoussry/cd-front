@@ -7,7 +7,7 @@ import ImageSelector from './ImageSelector'
 import { GET ,POST } from '../utils/API';
 import { toast } from 'react-toastify';
 
-export function PostWall({me, posts}) {
+export function PostWall({ me , posts , profileId , showProfile }) {
     const [homePosts, setHomePosts] = useState([]);
     const [images, setImages] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
@@ -47,12 +47,12 @@ export function PostWall({me, posts}) {
     }
 
     function starPost(post, index, staredSet){
-        if(staredSet.has(post.id) ) return <Post key={index} id={index} userAvatar={userAvatar} post={post} stareded = {true}/>
-        return <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+        if(staredSet.has(post.id) ) return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} stareded={true}/>
+        return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />
     }
 
     useEffect(() => {
-        if(initialPostsFetched){
+        if(initialPostsFetched) {
             if(me) {
                 GET(`post?skip=${skip}`).then((data) => {
                     const staredSet = new Set(data.stared);
@@ -66,6 +66,18 @@ export function PostWall({me, posts}) {
                 })
                 return  
             }
+          
+          if(profileId) {
+              POST('postX', { id: profileId }).then((data) => {
+                  setHomePosts(data.posts.map((post, index) => 
+                      <Post key={index} id={index} userAvatar={userAvatar} post={post} />
+                  ))
+              })
+              .catch((err) => {
+                  toast('Error Fetching Posts', {type: 'error'});
+              })
+              return 
+          }
         
             GET('image?type=regular').then((data) => {
                 setImages(data.images.map((image) => image.url));
@@ -85,20 +97,18 @@ export function PostWall({me, posts}) {
         else
             setInitialPostsFetched(true);
 
-
     }, [me, skip, initialPostsFetched]);
     
 
-    // just for testing
-
     return (
         <div className="post-wall">
-           {!me && <div className='add-post' onClick={()=>{
-                document.getElementById('myDialog').showModal();
-            }}>
+            {!me && !profileId && 
+                <div className='add-post' onClick={()=>{
+                    document.getElementById('myDialog').showModal();
+                }}>
                 New Post
-
-            </div>}
+                </div>
+            }
 
             <dialog id="myDialog">
             <button id="closeBtn" onClick ={()=>{
@@ -108,15 +118,17 @@ export function PostWall({me, posts}) {
             <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
 
             <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+            
             <button id="submitBtn" onClick ={()=>{
                 let data = {
                     description: document.getElementById('description').value,
                     images: selectedImages
                 }
-                POST('post',data).then((data) => {
-                    console.log(data)
+                POST('post', data).then((data) => {
+                    console.log("post data test" , data);
                     toast('Post Created Successfully');
-                }).catch((err) => {
+                })
+                .catch((err) => {
                     toast('Error Creating Post', {type: 'error'});
                 })  
                 document.getElementById('myDialog').close();

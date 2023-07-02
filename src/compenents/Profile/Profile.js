@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 
 import './Profile.css';
-import avatar from '../../assets/avatar.png';
+import myAvatar from '../../assets/avatar.png';
 import pro from '../../assets/pro.jpg';
 
 import { GET , POST } from '../utils/API';
 import { PostWall } from "../PostWall/PostWall";
 
-export function Profile() {
+export function Profile({ profileId }) {
     const [id, setId] = useState(null);
     const [name, setName] = useState(null); const [newName, setNewName] = useState(null);
     const [email, setEmail] = useState(null); const [newEmail, setNewEmail] = useState(null);
     const [job, setJob] = useState(null); const [newJob, setNewJob] = useState(null);
     const [phone, setPhone] = useState(null); const [newPhone, setNewPhone] = useState(null);
-    const [profileImage, setProfileImage] = useState(avatar);
-    const [coverImage, setCoverImage] = useState(pro);
+    const [avatar, setAvatar] = useState(myAvatar);
+    const [cover, setCover] = useState(pro);
 
     const [small , setSmall] = useState(false);
     const [me, setMe] = useState(true);
@@ -44,60 +44,77 @@ export function Profile() {
     },[]);
 
     useEffect(() => {
-        // update them to database
-        GET('user').then((response) => {
-            setId(response.id);
-            setName(response.name); setNewName(response.name);
-            setEmail(response.email); setNewEmail(response.email);
-            setJob(response.job); setNewJob(response.job);
-            setPhone(response.phone); setNewPhone(response.phone);
-            //setProfileImage(response.profileImage);
-            sessionStorage.setItem('user', JSON.stringify(response));
-        })
+        if(!profileId) {
+            GET('user').then((response) => {
+                setId(response.id);
+                setName(response.name); setNewName(response.name);
+                setEmail(response.email); setNewEmail(response.email);
+                setJob(response.job); setNewJob(response.job);
+                setPhone(response.phone); setNewPhone(response.phone);
+                setAvatar(response.avatar);
+                setCover(response.cover);
+                sessionStorage.setItem('user', JSON.stringify(response));
+            });
+        }
+        else {
+            console.log("post", profileId);
+            POST('user', { id: profileId }).then((response) => {
+                setId(response.id);
+                setName(response.name); setNewName(response.name);
+                setEmail(response.email); setNewEmail(response.email);
+                setJob(response.job); setNewJob(response.job);
+                setPhone(response.phone); setNewPhone(response.phone);
+                setAvatar(response.avatar);
+                setCover(response.cover);
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
         
-    },[name, email, profileImage, coverImage]);
+    },[profileId, name, email, job, phone]);
     
     const [isNameDisabled, setIsNameDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [isJobDisabled, setIsJobDisabled] = useState(true);
     const [isPhoneDisabled, setIsPhoneDisabled] = useState(true);
 
-    async function editProfileImage(e) {
+    async function editAvatar(e) {
         let selectedFile = e.target.files[0];
-        const response = editImage(selectedFile);
-
+        const response = await editImage(selectedFile);
+        
         // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
-            setProfileImage(data.url);
-            toast(`File uploaded successfully`);
+            setAvatar(data.url);
             const newUser = {
-                editType: "profileImage",
+                editType: "avatar",
                 id: id,
-                profileImage: profileImage
+                avatar: data.url
             };
             editInfo(newUser);
+            toast(`File uploaded successfully`);
         } 
         else {
           toast(`Error uploading file: ${response.statusText}`,{type:'error'});
         }
     }
 
-    async function editCoverImage(e) {
+    async function editCover(e) {
         let selectedFile = e.target.files[0];
-        const response = editImage(selectedFile);
-
+        const response = await editImage(selectedFile);
+        
         // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
-            setCoverImage(data.url);
-            toast(`File uploaded successfully`);
+            setCover(data.url);
             const newUser = {
-                editType: "coverImage",
+                editType: "cover",
                 id: id,
-                coverImage: coverImage
+                cover: data.url
             };
             editInfo(newUser);
+            toast(`File uploaded successfully`);
         } 
         else {
           toast(`Error uploading file: ${response.statusText}`,{type:'error'});
@@ -107,7 +124,8 @@ export function Profile() {
     async function editImage(selectedFile) {
         const formData = new FormData();
         formData.append('file', selectedFile);
-    
+        //formData.append('photoEdited', photoEdited);
+
         // Send the file upload request to the Sails.js server using the fetch API
         const response = await fetch(/*process.env.REACT_APP_API_BASE_URL*/ "http://localhost:1337/" + 'image/upload', {
           method: 'POST',
@@ -116,7 +134,7 @@ export function Profile() {
             'Authorization': `Bearer ${localStorage.getItem('_ria')}`,
           })
         });
-        console.log("response", response);
+
         return response;
     }
 
@@ -172,7 +190,8 @@ export function Profile() {
         POST('edit', newUser).then((response) => {
             console.log(response);
             toast("Account updated successfully", { type: 'success' });
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.log(error);
             toast("Account update failed", { type: 'error' });
         });
@@ -182,25 +201,33 @@ export function Profile() {
         <div>
             <div className={small? "pro-head pro-head-min": "pro-head" } >
                 <div className="pro-head-mainimg">
-                    <img src={coverImage} alt="cover" />
-                    <input type="file" id="cover-image" name="image" accept="image/*" onChange={editCoverImage}/>  
+                    <img src={cover} alt="cover" />
+                    {!profileId &&
+                        <input type="file" id="cover-image" name="image" accept="image/*" onChange={editCover}/>
+                    }  
                     <div className="pro-banner"></div>
                 </div>
                 <div className="pro-head-img">
                     <div>
-                        <img className="pro-img" src={profileImage} alt="avatar" />
-                        <input type="file" id="pro-image" name="image" accept="image/*" onChange={editProfileImage}/>
+                        <img className="pro-img" src={avatar} alt="avatar" />
+                        {!profileId &&
+                            <input type="file" id="pro-image" name="image" accept="image/*" onChange={editAvatar}/>
+                        }
                     </div>
-                    <div className="wrapper">
-                        <input type="text" className="pro-name" value={newName} disabled={isNameDisabled}
-                            onChange={(e) => {
-                                setNewName(e.target.value);
-                            }}
-                        />     
-                        <button className="edit-icon" onClick={editName}>
-                            <i className="bx bx-pencil"></i>
-                        </button>
-                    </div>
+                    <input type="text" className="pro-name" value={newName} disabled={isNameDisabled}
+                        onChange={(e) => {
+                            setNewName(e.target.value);
+                        }}
+                    />
+                    {!profileId &&   
+                        <div className="wrapper">  
+                            <button className="edit-icon" onClick={editName}>
+                                <i className="bx bx-pencil"></i>
+                            </button>
+                            <input type="file" className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
+                        </div>  
+                    }  
+                    
                 </div>
             </div>
 
@@ -209,13 +236,17 @@ export function Profile() {
                     <label className="label"> Personal Info. </label>
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
                     <div className="info">
-                        <label className="info-label"> 
-                            <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> email </i>
-                            Email 
-                        </label>
-                        <button className="edit-icon" onClick={editEmail}>
-                            <i className="bx bx-pencil"></i>
-                        </button>
+                        <div className="label-box">
+                            <label className="info-label"> 
+                                <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> email </i>
+                                Email 
+                            </label>
+                            {!profileId &&
+                                <button className="edit-icon" onClick={editEmail}>
+                                    <i className="bx bx-pencil"></i>
+                                </button>
+                            }
+                        </div>
                         <input type="email" name="email" className="info-input" value={newEmail} disabled={isEmailDisabled}
                             onChange={(e) => {
                                 setNewEmail(e.target.value);
@@ -223,35 +254,43 @@ export function Profile() {
                         />
                     </div>
                     <div className="info">
-                        <label className="info-label"> 
-                            <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> work </i>
-                            Job Description 
-                        </label>
-                        <button className="edit-icon" onClick={editJob}>
-                            <i className="bx bx-pencil"></i>
-                        </button>
-                        <input type="text" name="job" className="info-input" disabled={isJobDisabled} 
+                        <div className="label-box">
+                            <label className="info-label"> 
+                                <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> work </i>
+                                Job Description 
+                            </label>
+                            {!profileId &&
+                                <button className="edit-icon" onClick={editJob}>
+                                    <i className="bx bx-pencil"></i>
+                                </button>
+                            }
+                        </div>
+                        <input type="text" name="job" className="info-input" value={newJob} disabled={isJobDisabled} 
                             onChange={(e) => {
                                 setNewJob(e.target.value);
                             }}
                         />
                     </div>
                     <div className="info">
-                        <label className="info-label">
-                            <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> phone </i>
-                            Phone
-                        </label>
-                        <button className="edit-icon" onClick={editPhone}>
-                            <i className="bx bx-pencil"></i>
-                        </button>
-                        <input type="text" name="phone" className="info-input" disabled={isPhoneDisabled} 
+                        <div className="label-box">
+                            <label className="info-label">
+                                <i className="material-icons" style={{ fontSize: 22, marginRight: 8 }}> phone </i>
+                                Phone
+                            </label>
+                            {!profileId &&
+                                <button className="edit-icon" onClick={editPhone}>
+                                    <i className="bx bx-pencil"></i>
+                                </button>
+                            }
+                        </div>
+                        <input type="text" name="phone" className="info-input" value={newPhone} disabled={isPhoneDisabled} 
                             onChange={(e) => {
                                 setNewPhone(e.target.value);
                             }}
                         />
                     </div>
                 </div>
-                <PostWall me={true} posts={[]} />
+                <PostWall me={profileId?false:true} posts={[]} profileId={profileId} />
             </div>
         </div>
     );
