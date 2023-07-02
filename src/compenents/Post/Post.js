@@ -12,6 +12,7 @@ export function Post({ userAvatar, post, showProfile, isStared }) {
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [stared , setStared] = useState(isStared);
+  
     const [comment, setComment] = useState([]);
     
     const [loading, setLoading] = useState(false);
@@ -148,17 +149,24 @@ export function Post({ userAvatar, post, showProfile, isStared }) {
                     { post.images && post.images.map((img, index) => (showImages(img, index, post.images.length))) }
                 </div>
 
-                {isViewerOpen &&<div style={{zIndex:1000000000}}> 
-                    <ImageViewer
-                    src={ post.images }
-                    currentIndex={ currentImage }
-                    disableScroll={ false }
-                    closeOnClickOutside={ true }
-                    onClose={ closeImageViewer }
-                    />
-                    </div>
-                }
-                </div>
+
+                        <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
+                        {post.images && post.images.map((img, index) => ( showImages(img, index, post.images.length) ))}
+                        </div>
+
+
+
+                        {isViewerOpen &&<div style={{zIndex:1000000000}}> 
+                            <ImageViewer
+                            src={ post.images }
+                            currentIndex={ currentImage }
+                            disableScroll={ false }
+                            closeOnClickOutside={ true }
+                            onClose={ closeImageViewer }
+                            />
+                            </div>
+                        }
+                        </div>
             </div>
 
             <div className="post-info">
@@ -194,4 +202,4 @@ export function Post({ userAvatar, post, showProfile, isStared }) {
             </ div>}
         </div>
     );
-}
+};

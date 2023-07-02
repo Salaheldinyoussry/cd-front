@@ -110,6 +110,7 @@ function RequireAuth({ children }) {
   // const myCookie = Cookies.get('_ria');
  const st  = localStorage.getItem('_ria');
 
+
   if(!st) {
     console.log("not logged in");
     return <Navigate to="/login" state={{ from: location }} replace />;

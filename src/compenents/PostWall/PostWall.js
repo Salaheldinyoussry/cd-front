@@ -98,13 +98,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
             .catch((error) => {
                 toast('Error Fetching Posts', {type: 'error'});
             })
-            return 
         }
-
-        GET('image?type=regular').then((data) => {
-          setImages(data.images.map((image) => image.url))
-    
-        })
 
         GET('post/feed').then((data) => {
             setHomePosts(data.posts.map((post, index) => 
