@@ -69,7 +69,7 @@ export function SideBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/" className="nav-item" id="/">
+                                <Link to="/home" className="nav-item" id="/home">
                                     <i className="bx bxs-home"></i>
                                     <span>Home</span>
                                 </Link>

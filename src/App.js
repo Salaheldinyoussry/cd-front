@@ -27,46 +27,54 @@ import { Notifications } from './compenents/Notifications/Notifications.js';
 import { BugReport } from './compenents/BugReport/BugReport.js';
 
 function App() {
+  const navigate = useNavigate();
+  const [profileUserId, setProfileUserId] = useState(null);
+
+  function showProfile(e) {
+    setProfileUserId(e.target.id);
+    console.log("show profile with userId", profileUserId);
+    navigate("/home/" + e.target.id);
+  }
+
   return (
     <div className="App">
       <AuthProvider>
-
         <Routes>
-          {/* <Route path="/" element={<SignIn/>}></Route>
-          <Route path="/signUp" element={<SignUp/>}></Route>
-          <Route path="/home/*" element={<SideBar/>}></Route> */}
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-
-
-
           <Route
-              path="/"
-              element={
-                <RequireAuth>
-                  <SideBar/>
-                  <Home />
-                </RequireAuth>
-              }
-            />
-
-            <Route path="/profile" element={<RequireAuth><SideBar/><Profile/> </RequireAuth>} > </Route>
-            {/* <Route path="/" element={<Home/>}></Route> */}
-            <Route path="/morphing" element={ <RequireAuth> <SideBar/> <ImageMorphing/> </RequireAuth> } > </Route>
-            <Route path="/augmentation" element={<RequireAuth> <SideBar/> <DataAugmentation/> </RequireAuth>}></Route>
-            <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
-            <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
-            <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
-            <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
-            <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
-
+            path="/home"
+            element={
+              <RequireAuth>
+                <SideBar/>
+                <Home showProfile={showProfile} />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/home/*"
+            element={
+              <RequireAuth>
+                <SideBar/>
+                <Profile profileId={profileUserId} />
+              </RequireAuth>
+            }
+          />
+          <Route path="/profile" element={<RequireAuth><SideBar/><Profile/></RequireAuth>} > </Route>
+          <Route path="/morphing" element={ <RequireAuth><SideBar/><ImageMorphing/></RequireAuth> } > </Route>
+          <Route path="/augmentation" element={<RequireAuth> <SideBar/><DataAugmentation/></RequireAuth>}></Route>
+          <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
+          <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
+          <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
+          <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
+          <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
         </Routes>
-
       </AuthProvider>
 
     </div>
   );
 }
+
 let AuthContext = React.createContext(null);
 
 function AuthProvider({ children }) {
@@ -103,7 +111,7 @@ function RequireAuth({ children }) {
  const st  = localStorage.getItem('_ria');
 
 
-  if (!st) {
+  if(!st) {
     console.log("not logged in");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }

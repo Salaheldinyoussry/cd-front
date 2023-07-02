@@ -202,9 +202,6 @@ export function Profile({ profileId }) {
             <div className={small? "pro-head pro-head-min": "pro-head" } >
                 <div className="pro-head-mainimg">
                     <img src={cover} alt="cover" />
-                    {!profileId &&
-                        <input type="file" id="cover-image" name="image" accept="image/*" onChange={editCover}/>
-                    }  
                     <div className="pro-banner"></div>
                 </div>
                 <div className="pro-head-img">
