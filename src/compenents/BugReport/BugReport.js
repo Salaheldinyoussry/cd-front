@@ -52,7 +52,6 @@ export function BugReport() {
         </form>
         <div className="submit">
           <input type="submit" className="block-button-small" onClick={bugReport} />
-
         </div>
       </div>
     </div>
