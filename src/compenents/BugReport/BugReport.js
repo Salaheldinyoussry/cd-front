@@ -36,7 +36,7 @@ export function BugReport() {
     });
   }
 
-  function checkFields(requestObject, fields){
+  function checkFields(requestObject, fields) {
     return fields.every(k => (k in requestObject && requestObject[k] && requestObject[k].trim().length > 0))
   }
 
@@ -47,7 +47,6 @@ export function BugReport() {
         <form className="bug">
           <h2> Title </h2>
           <input type="text" className="bug-title" id="bug-title" />
-
           <h2> Description </h2>
           <textarea className="bug-description" id="bug-description"></textarea>
         </form>

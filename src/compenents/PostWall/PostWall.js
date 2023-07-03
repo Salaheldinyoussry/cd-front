@@ -64,6 +64,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
                 )]);
                 setSkip(prevSkip => prevSkip + data.posts.length);
             })
+
             .catch((error) => {
                 toast('Error Fetching Posts', {type: 'error'});
             })
