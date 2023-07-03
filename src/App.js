@@ -19,7 +19,6 @@ import { AuthUtil } from "./compenents/utils/AuthProvider";
 import { Home } from './compenents/Home/Home.js';
 import { Profile } from './compenents/Profile/Profile.js';
 import { ImageMorphing } from './compenents/ImageMorphing/ImageMorphing.js';
-import { DataAugmentation } from './compenents/DataAugmentation/DataAugmentation.js';
 import { GenerateImage } from './compenents/GenerateImage/GenerateImage.js';
 import { SavedImages } from './compenents/SavedImages/SavedImages.js';
 import { DrawPlane } from './compenents/DrawPlane/DrawPlane.js';
@@ -62,7 +61,6 @@ function App() {
           />
           <Route path="/profile" element={<RequireAuth><SideBar/><Profile/></RequireAuth>} > </Route>
           <Route path="/morphing" element={ <RequireAuth><SideBar/><ImageMorphing/></RequireAuth> } > </Route>
-          <Route path="/augmentation" element={<RequireAuth> <SideBar/><DataAugmentation/></RequireAuth>}></Route>
           <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
           <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
           <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>

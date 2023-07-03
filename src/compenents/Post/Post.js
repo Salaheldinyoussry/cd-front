@@ -7,7 +7,7 @@ import { POST , GET } from '../utils/API';
 import Loader from '../Loader/Loader';
 import avatar from '../../assets/avatar.png';
 
-export function Post({ userAvatar, post, showProfile, isStared }) {
+export function Post({ post, showProfile, isStared }) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -129,7 +129,7 @@ export function Post({ userAvatar, post, showProfile, isStared }) {
 
             <div className="user-info">
                 <div className="user-avatar">
-                    <img src={userAvatar} alt="author"></img>
+                    <img src={post.userId.avatar?post.userId.avatar:avatar} alt="author"></img>
                 </div>
 
                 <div className="user-data">

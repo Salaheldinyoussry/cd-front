@@ -16,12 +16,13 @@ export function Profile({ profileId }) {
     const [phone, setPhone] = useState(null); const [newPhone, setNewPhone] = useState(null);
     const [avatar, setAvatar] = useState(myAvatar);
     const [cover, setCover] = useState(pro);
+    const [numFollowers, setNumFollowers] = useState(0);
+    const [isFollower, setIsFollower] = useState(false);
 
     const [small , setSmall] = useState(false);
     const [me, setMe] = useState(true);
 
     useEffect(() => {
-        // update them to database
         window.addEventListener("scroll", function () {
             // var banner = document.querySelector(".pro-head");
             // if(window.scrollY > 0)
@@ -39,7 +40,7 @@ export function Profile({ profileId }) {
             //     // banner.classList.add("pro-head-min");
             // }
             // banner.classList.toggle("pro-head-min", window.scrollY > 0);
-          });
+        });
 
     },[]);
 
@@ -53,12 +54,13 @@ export function Profile({ profileId }) {
                 setPhone(response.phone); setNewPhone(response.phone);
                 setAvatar(response.avatar);
                 setCover(response.cover);
+                setNumFollowers(response.followers.length);
                 sessionStorage.setItem('user', JSON.stringify(response));
             });
         }
         else {
-            console.log("post", profileId);
-            POST('user', { id: profileId }).then((response) => {
+            console.log("profileId", profileId);
+            GET(`user?profileId=${profileId}`).then((response) => {
                 setId(response.id);
                 setName(response.name); setNewName(response.name);
                 setEmail(response.email); setNewEmail(response.email);
@@ -66,6 +68,8 @@ export function Profile({ profileId }) {
                 setPhone(response.phone); setNewPhone(response.phone);
                 setAvatar(response.avatar);
                 setCover(response.cover);
+                setNumFollowers(response.followers.length); 
+                setIsFollower(checkFollower(response.followers));
             })
             .catch((error) => {
                 console.log(error)
@@ -83,13 +87,11 @@ export function Profile({ profileId }) {
         let selectedFile = e.target.files[0];
         const response = await editImage(selectedFile);
         
-        // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
             setAvatar(data.url);
             const newUser = {
                 editType: "avatar",
-                id: id,
                 avatar: data.url
             };
             editInfo(newUser);
@@ -104,13 +106,11 @@ export function Profile({ profileId }) {
         let selectedFile = e.target.files[0];
         const response = await editImage(selectedFile);
         
-        // Handle the response from the Sails.js server
         if(response.ok) {
             const data = await response.json();
             setCover(data.url);
             const newUser = {
                 editType: "cover",
-                id: id,
                 cover: data.url
             };
             editInfo(newUser);
@@ -124,9 +124,7 @@ export function Profile({ profileId }) {
     async function editImage(selectedFile) {
         const formData = new FormData();
         formData.append('file', selectedFile);
-        //formData.append('photoEdited', photoEdited);
 
-        // Send the file upload request to the Sails.js server using the fetch API
         const response = await fetch(/*process.env.REACT_APP_API_BASE_URL*/ "http://localhost:1337/" + 'image/upload', {
           method: 'POST',
           body: formData,
@@ -142,7 +140,6 @@ export function Profile({ profileId }) {
         if(!isNameDisabled && (name!==newName)) {
             const newUser = {
                 editType: "name",
-                id: id,
                 name: newName
             };
             editInfo(newUser);
@@ -154,7 +151,6 @@ export function Profile({ profileId }) {
         if(!isEmailDisabled && (email!==newEmail)) {
             const newUser = {
                 editType: "email",
-                id: id,
                 email: newEmail
             };
             editInfo(newUser);
@@ -166,7 +162,6 @@ export function Profile({ profileId }) {
         if(!isJobDisabled && (job!==newJob)) {
             const newUser = {
                 editType: "job",
-                id: id,
                 job: newJob
             };
             editInfo(newUser);
@@ -178,7 +173,6 @@ export function Profile({ profileId }) {
         if(!isPhoneDisabled && (phone!==newPhone)) {
             const newUser = {
                 editType: "phone",
-                id: id,
                 phone: newPhone
             };
             editInfo(newUser);
@@ -197,8 +191,39 @@ export function Profile({ profileId }) {
         });
     }
 
+    function follow() {
+        let follow = isFollower?'unfollow':'follow';
+        setIsFollower(!isFollower);
+        POST(follow, {followeeId: profileId}).then((response) => {
+            console.log(response);
+            if(response.success) {
+                toast(follow + " successfully", { type: 'success' });
+            }
+            else {
+                toast("Failed to " + follow, { type: 'error' });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            toast("Failed to " + follow, { type: 'error' });
+        });
+    }
+
+    function checkFollower(followers) {
+        let userId = JSON.parse(sessionStorage.getItem('user')).id;
+        var isFollower = false;
+        followers.forEach((follower) => {
+            if(follower.followerId === userId) {
+                isFollower = true;
+                return;
+            }
+        });
+        return isFollower;
+    }
+
     return (
         <div>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
             <div className={small? "pro-head pro-head-min": "pro-head" } >
                 <div className="pro-head-mainimg">
                     <img src={cover} alt="cover" />
@@ -224,14 +249,28 @@ export function Profile({ profileId }) {
                             <input type="file" className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
                         </div>  
                     }  
-                    
+                    {profileId &&
+                        <div className="follow-wrapper">
+                            <button className={isFollower?"follow-btn dark":"follow-btn light"} onClick={follow}>
+                                {isFollower &&
+                                    <i className="bx bx-check" style={{ fontSize: 18, paddingRight: 3 }}></i>
+                                }
+                                {!isFollower &&
+                                    <i className="bx bx-plus" style={{ fontSize: 18, paddingRight: 3 }}></i>
+                                }
+                                Follow
+                            </button>
+                            <div className="num-followers">
+                                { numFollowers + " follower" }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
 
             <div className={small? "pro-body":"pro-body" }>
                 <div className="personal-card">
                     <label className="label"> Personal Info. </label>
-                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
                     <div className="info">
                         <div className="label-box">
                             <label className="info-label"> 

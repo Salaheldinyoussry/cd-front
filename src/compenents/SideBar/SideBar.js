@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link , useLocation } from 'react-router-dom';
+import { Link , useLocation , useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import './SideBar.css';
@@ -8,6 +8,8 @@ import avatar from '../../assets/avatar.png';
 
 export function SideBar() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const [user, setUser] = useState({});
     const [sidebar, setSidebar] = useState(false);
     
@@ -44,6 +46,24 @@ export function SideBar() {
             sidebar.classList.remove('open');
     }
 
+    function signOut() {
+        GET("logout").then((response) => {
+          console.log(response);
+          if(response.success) {
+            localStorage.removeItem('_ria');
+            sessionStorage.removeItem('user');
+            navigate('/login');
+          }
+          else {
+            toast("Can not logout", { type: 'error' });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast("Can not logout", { type: 'error' });
+        });
+    }
+
     return (
         <div>
             <div className="body">
@@ -54,8 +74,8 @@ export function SideBar() {
                     </div>
 
                     <div className="logo">
-                        <img style={{borderRadius:"50%"}} src={avatar} alt="..."/>
-                        <h3>{user ? user.name:""}</h3>
+                        <img style={{borderRadius:"50%"}} src={user.avatar?user.avatar:avatar} alt="avatar"/>
+                        <h3>{user.name?user.name:""}</h3>
                     </div>
 
                     <br/> 
@@ -87,12 +107,6 @@ export function SideBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/augmentation" className="nav-item" id="/augmentation">
-                                    <i className="bx bx-images"></i>
-                                    <span>Data Augmentation</span>
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/images" className="nav-item" id="/images">
                                     <i className="bx bxs-photo-album"></i>
                                     <span>Saved Images</span>
@@ -111,15 +125,15 @@ export function SideBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/settings" className="nav-item" id="/settings">
-                                    <i className="bx bxs-cog"></i>
-                                    <span>Settings</span>
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/bug" className="nav-item" id="/bug">
                                     <i className="bx bxs-message-dots"></i>
                                     <span>Report Bug</span>
+                                </Link>
+                            </li>
+                            <li style={{marginTop: '30px'}} onClick={signOut}>
+                                <Link to="/login" className="nav-item">
+                                    <i className="bx bx-log-out"></i>
+                                    <span>Settings</span>
                                 </Link>
                             </li>
                         </ul>

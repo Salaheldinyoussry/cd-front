@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import './Home.css';
-import avatar from '../../assets/avatar.png';
 
 import { PostWall } from '../PostWall/PostWall.js';
 import { Post } from '../Post/Post.js';
@@ -14,7 +13,6 @@ export function Home({ showProfile }) {
       <option key={filter_option}>{ filter_option }</option>
   );
 
-  const userAvatar = avatar;
   const [filterType, setFilterType] = useState("description");
   const [searchFilter, setSearchFilter] = useState("");
   const [posts, setPosts] = useState([]);
@@ -27,7 +25,7 @@ export function Home({ showProfile }) {
       };
       POST('post/filter', query).then((data) => {
         setPosts(data.posts.map((post, index) => 
-            <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />        
+            <Post key={index} id={index} post={post} showProfile={showProfile} />        
         ))
         console.log(data.posts);
       })

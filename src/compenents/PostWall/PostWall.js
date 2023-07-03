@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import './PostWall.css';
 import { Post } from '../Post/Post.js';
 import { GET ,POST } from '../utils/API';
-import avatar from '../../assets/avatar.png';
 import ImageSelector from './ImageSelector';
 
 export function PostWall({ me , posts , profileId , showProfile }) {
@@ -14,17 +13,14 @@ export function PostWall({ me , posts , profileId , showProfile }) {
     const [skip, setSkip] = useState(0);
     const [initialPostsFetched, setInitialPostsFetched] = useState(false);
 
-    // just for testing
-    const userAvatar = avatar;
-
     function addImage(url){
         setImages([url,...images]);
     }
 
     function starPost(post, index, staredSet) {
         if(staredSet.has(post.id)) 
-            return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} isStared={true}/>
-        return <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />
+            return <Post key={index} id={index} post={post} showProfile={showProfile} isStared={true}/>
+        return <Post key={index} id={index} post={post} showProfile={showProfile} />
     }
 
     useEffect(() => {
@@ -51,7 +47,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
                     )]);
                     setSkip(prevSkip => prevSkip + data.posts.length);
                 })
-                .catch((err) => {
+                .catch((error) => {
                     toast('Error Fetching Posts', {type: 'error'});
                 })
                 return  
@@ -74,46 +70,6 @@ export function PostWall({ me , posts , profileId , showProfile }) {
         }
         else
             setInitialPostsFetched(true);
-
-        /*if(me) {
-            GET('post').then((data) => {
-                const staredSet = new Set(data.stared);
-                setHomePosts(data.posts.map((post, index) => 
-                    starPost(post, index, staredSet)
-                ))
-            })
-            .catch((error) => {
-                toast('Error Fetching Posts', {type: 'error'});
-            })
-            return  
-        }
-
-        if(profileId) {
-            GET(`post?profileId=${profileId}`).then((data) => {
-                const staredSet = new Set(data.stared);
-                setHomePosts(data.posts.map((post, index) => 
-                    starPost(post, index, staredSet)
-                ))
-            })
-            .catch((error) => {
-                toast('Error Fetching Posts', {type: 'error'});
-            })
-            return 
-        }
-
-        GET('image?type=regular').then((data) => {
-          setImages(data.images.map((image) => image.url))
-    
-        })
-
-        GET('post/feed').then((data) => {
-            setHomePosts(data.posts.map((post, index) => 
-                <Post key={index} id={index} userAvatar={userAvatar} post={post} showProfile={showProfile} />        
-            ))
-        })
-        .catch((err) => {
-            toast('Error Fetching Posts', {type: 'error'});
-        })*/
       
     }, [me, skip, initialPostsFetched, posts]);
 
@@ -154,7 +110,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
    
             </dialog>
 
-            { posts.length!=0? posts:homePosts }
+            { posts.length!==0? posts:homePosts }
         </div>
     );
 }
