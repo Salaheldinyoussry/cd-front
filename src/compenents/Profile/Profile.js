@@ -16,6 +16,7 @@ export function Profile({ profileId }) {
     const [phone, setPhone] = useState(null); const [newPhone, setNewPhone] = useState(null);
     const [avatar, setAvatar] = useState(myAvatar);
     const [cover, setCover] = useState(myCover);
+
     const [numFollowers, setNumFollowers] = useState(0);
     const [isFollower, setIsFollower] = useState(false);
 
@@ -227,6 +228,7 @@ export function Profile({ profileId }) {
             <div className={small? "pro-head pro-head-min": "pro-head" } >
                 <div className="pro-head-mainimg">
                     <img src={cover?cover:myCover} alt="cover" />
+
                     <div className="pro-banner"></div>
                 </div>
                 <div className="pro-head-img" style={{height:"280px"}}>
@@ -241,6 +243,7 @@ export function Profile({ profileId }) {
                         }
                     </div>
                     <input type="text" className="pro-name" style={{transform: 'translateX(0%) translateY(60%)'}} value={newName} disabled={isNameDisabled}
+
                         onChange={(e) => {
                             setNewName(e.target.value);
                         }}

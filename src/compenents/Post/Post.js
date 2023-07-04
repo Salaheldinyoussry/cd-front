@@ -14,6 +14,7 @@ export function Post({ post, isStared, showProfile }) {
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [stared , setStared] = useState(isStared);
+
     const [comment, setComment] = useState([]);
     const [images, setImages] = useState(post.images);
     const [selectedImages, setSelectedImages] = useState(post.images);
@@ -187,17 +188,24 @@ export function Post({ post, isStared, showProfile }) {
                     { post.images && post.images.map((img, index) => (showImages(img, index, post.images.length))) }
                 </div>
 
-                {isViewerOpen &&<div style={{zIndex:1000000000}}> 
-                    <ImageViewer
-                    src={ post.images }
-                    currentIndex={ currentImage }
-                    disableScroll={ false }
-                    closeOnClickOutside={ true }
-                    onClose={ closeImageViewer }
-                    />
-                    </div>
-                }
-                </div>
+
+                        <div className='postimg' style={post.images && post.images.length==1?{ gridTemplateColumns:"1fr"}:{}}>
+                        {post.images && post.images.map((img, index) => ( showImages(img, index, post.images.length) ))}
+                        </div>
+
+
+
+                        {isViewerOpen &&<div style={{zIndex:1000000000}}> 
+                            <ImageViewer
+                            src={ post.images }
+                            currentIndex={ currentImage }
+                            disableScroll={ false }
+                            closeOnClickOutside={ true }
+                            onClose={ closeImageViewer }
+                            />
+                            </div>
+                        }
+                        </div>
             </div>
 
             <div className="post-info">
@@ -233,4 +241,4 @@ export function Post({ post, isStared, showProfile }) {
             </ div>}
         </div>
     );
-}
+};
