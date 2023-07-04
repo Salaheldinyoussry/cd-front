@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import './PostWall.css';
 import { Post } from '../Post/Post.js';
-import { GET ,POST } from '../utils/API';
+import { GET , POST } from '../utils/API';
 import ImageSelector from './ImageSelector';
 
 export function PostWall({ me , posts , profileId , showProfile }) {
@@ -33,7 +33,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
                     )]);
                     setSkip(prevSkip => prevSkip + data.posts.length);
                 })
-                .catch((err) => {
+                .catch((error) => {
                     toast('Error Fetching Posts', {type: 'error'});
                 })
                 return  
@@ -71,7 +71,7 @@ export function PostWall({ me , posts , profileId , showProfile }) {
         else
             setInitialPostsFetched(true);
       
-    }, [me, skip, initialPostsFetched, posts]);
+    }, [me, profileId, skip, initialPostsFetched, posts]);
 
     return (
         <div className="post-wall">
@@ -84,30 +84,31 @@ export function PostWall({ me , posts , profileId , showProfile }) {
             }
 
             <dialog id="myDialog">
-            <button id="closeBtn" onClick ={()=>{
-                document.getElementById('myDialog').close();
-            }}>x</button>
-            <h1>Create Post</h1>
-            <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
+                <div className="close-bar">
+                    <button id="closeBtn" onClick ={()=>{
+                        document.getElementById('myDialog').close();
+                    }}>x</button>
+                </div>
+                <h1>Create Post</h1>
+                <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
 
-            <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
-            
-            <button id="submitBtn" onClick ={()=>{
-                let data = {
-                    description: document.getElementById('description').value,
-                    images: selectedImages
-                }
-                POST('post', data).then((data) => {
-                    console.log("post data test" , data);
-                    toast('Post Created Successfully');
-                })
-                .catch((err) => {
-                    toast('Error Creating Post', {type: 'error'});
-                })  
-                document.getElementById('myDialog').close();
+                <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+                
+                <button id="submitBtn" onClick ={()=>{
+                    let data = {
+                        description: document.getElementById('description').value,
+                        images: selectedImages
+                    }
+                    POST('post', data).then((data) => {
+                        console.log("post data test" , data);
+                        toast('Post Created Successfully');
+                    })
+                    .catch((err) => {
+                        toast('Error Creating Post', {type: 'error'});
+                    })  
+                    document.getElementById('myDialog').close();
 
-            }} > Submit </button>
-   
+                }} > Submit </button>
             </dialog>
 
             { posts.length!==0? posts:homePosts }

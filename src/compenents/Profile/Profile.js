@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import './Profile.css';
 import myAvatar from '../../assets/avatar.png';
-import pro from '../../assets/pro.jpg';
+import myCover from '../../assets/pro.jpg';
 
 import { GET , POST } from '../utils/API';
 import { PostWall } from "../PostWall/PostWall";
@@ -15,7 +15,7 @@ export function Profile({ profileId }) {
     const [job, setJob] = useState(null); const [newJob, setNewJob] = useState(null);
     const [phone, setPhone] = useState(null); const [newPhone, setNewPhone] = useState(null);
     const [avatar, setAvatar] = useState(myAvatar);
-    const [cover, setCover] = useState(pro);
+    const [cover, setCover] = useState(myCover);
     const [numFollowers, setNumFollowers] = useState(0);
     const [isFollower, setIsFollower] = useState(false);
 
@@ -76,7 +76,7 @@ export function Profile({ profileId }) {
             });
         }
         
-    },[profileId, name, email, job, phone]);
+    },[profileId, name, email, job, phone, isFollower]);
     
     const [isNameDisabled, setIsNameDisabled] = useState(true);
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
@@ -226,12 +226,12 @@ export function Profile({ profileId }) {
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
             <div className={small? "pro-head pro-head-min": "pro-head" } >
                 <div className="pro-head-mainimg">
-                    <img src={cover} alt="cover" />
+                    <img src={cover?cover:myCover} alt="cover" />
                     <div className="pro-banner"></div>
                 </div>
                 <div className="pro-head-img">
                     <div>
-                        <img className="pro-img" src={avatar} alt="avatar" />
+                        <img className="pro-img" src={avatar?avatar:myAvatar} alt="avatar" />
                         {!profileId &&
                             <input type="file" id="pro-image" name="image" accept="image/*" onChange={editAvatar}/>
                         }
@@ -242,12 +242,12 @@ export function Profile({ profileId }) {
                         }}
                     />
                     {!profileId &&   
-                        <div className="wrapper">  
+                        <div className="wrapper">
                             <button className="edit-icon" onClick={editName}>
                                 <i className="bx bx-pencil"></i>
                             </button>
-                            <input type="file" className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
-                        </div>  
+                            <input type="file" id="cover" name="image" accept="image/*" onChange={editCover}/>
+                        </div> 
                     }  
                     {profileId &&
                         <div className="follow-wrapper">

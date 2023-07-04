@@ -1,19 +1,22 @@
 import { useState, useCallback } from 'react';
+import { toast } from 'react-toastify';
 import ImageViewer from 'react-simple-image-viewer';
 
 import './Post.css';
 import { Comment } from '../Comment/Comment.js';
 import { POST , GET } from '../utils/API';
+import ImageSelector from '../PostWall/ImageSelector';
 import Loader from '../Loader/Loader';
 import avatar from '../../assets/avatar.png';
 
-export function Post({ post, showProfile, isStared }) {
+export function Post({ post, isStared, showProfile }) {
     const [showComments, setShowComments] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [stared , setStared] = useState(isStared);
     const [comment, setComment] = useState([]);
-    
+    const [images, setImages] = useState(post.images);
+    const [selectedImages, setSelectedImages] = useState(post.images);
     const [loading, setLoading] = useState(false);
 
     const maxImagesCount = 4;
@@ -26,7 +29,6 @@ export function Post({ post, showProfile, isStared }) {
     const closeImageViewer = () => {
       setCurrentImage(0);
       setIsViewerOpen(false);
-      
     };
 
     function rate() {
@@ -59,24 +61,6 @@ export function Post({ post, showProfile, isStared }) {
             console.log(err)
         })
     }
-
-    // function display(images){
-    //     if(images.length==2){
-    //         return <div style={{display:"flex" , flexDirection:"row"}}>
-    //         <img src={images[0]} alt="post"></img>
-    //         <img src={images[1]} alt="post"></img>
-    //     </div>
-    //     }
-    //     else if(images.length==3){
-    //         return <div style={{display:"flex" , flexDirection:"row"}}>
-    //         <img src={images[0]} alt="post"></img>
-    //         <img src={images[1]} alt="post"></img>
-    //         <div style={{display:"flex"}}>
-    //         <img src={images[2]} alt="post"></img>
-    //         </div>
-    //     </div>
-    //     }
-    // }
 
     function handleComments () {
         if(showComments) {
@@ -123,9 +107,54 @@ export function Post({ post, showProfile, isStared }) {
         return null
     }
 
+    function deletePost(e) {
+        let postId = e.target.id;
+        POST(`post/delete`, { postId: postId }).then((data) => {
+            toast("Delete Post Successfully", { type: 'success' });
+        })
+        .catch((error) => {
+            toast("Error Deleting Post", {type: 'error'});
+        })
+    }
+
+    function addImage(url){
+        setImages([url,...images]);
+    }
+
+    function editPost() {
+        document.getElementById(post.id).showModal();
+    }
+
+    function submitEditPost() {
+        let data = {
+            id: post.id,
+            description: document.getElementById('description' + post.id).value,
+            images: selectedImages
+        }
+        POST('post/edit', data).then((data) => {
+            toast('Post Edited Successfully', {type: 'success'});
+        })
+        .catch((err) => {
+            toast('Error Editing Post', {type: 'error'});
+        })  
+        document.getElementById(post.id).close();
+    }
+
     return (
         <div className="post">
             <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
+
+            <dialog className="post-edit" id={post.id}>
+                <div className="close-bar">
+                    <button className="closeBtn" onClick ={()=>{
+                        document.getElementById(post.id).close();
+                    }}>x</button>
+                </div>
+                <h1> Edit Post </h1>
+                <textarea className="description" id={'description' + post.id} placeholder={post.description} rows="4" cols="50"></textarea>
+                <ImageSelector images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+                <button className="submitBtn" onClick ={submitEditPost}> Submit </button>
+            </dialog>
 
             <div className="user-info">
                 <div className="user-avatar">
@@ -135,6 +164,16 @@ export function Post({ post, showProfile, isStared }) {
                 <div className="user-data">
                     <div className="username" id={post.userId?.id} onClick={showProfile}> {post.userId?.name} </div>
                     <div className="post-date"> {new Date(post.createdAt).toUTCString()} </div>
+                </div>
+                
+                <div className="dots">
+                    <div className="dots-icon">
+                        <i className="bx bx-dots-vertical" style={{fontSize:'24px', paddingTop:'5px'}} ></i>
+                    </div>
+                    <div class="dots-content">
+                        <a id={post.id} onClick={deletePost}> Delete </a>
+                        <a id={post.id} onClick={editPost}> Edit </a>
+                    </div>
                 </div>
             </div>
 

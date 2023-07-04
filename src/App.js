@@ -64,7 +64,14 @@ function App() {
           <Route path="/generate" element={<RequireAuth><SideBar/><GenerateImage/></RequireAuth>}></Route>
           <Route path="/images" element={<RequireAuth><SideBar/><SavedImages/></RequireAuth>}></Route>
           <Route path="/draw" element={<RequireAuth><SideBar/><DrawPlane/></RequireAuth>}></Route>
-          <Route path="/notifications" element={<RequireAuth><SideBar/><Notifications/></RequireAuth>}></Route>
+          <Route 
+            path="/notifications/*" 
+            element={<RequireAuth>
+              <SideBar/>
+              <Notifications showProfile={showProfile} />
+              </RequireAuth>
+            } 
+          />
           <Route path="/bug" element={<RequireAuth><SideBar/><BugReport/></RequireAuth>}></Route>
         </Routes>
       </AuthProvider>

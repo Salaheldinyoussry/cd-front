@@ -156,8 +156,8 @@ body{
     background-color: var(--gray-color);
 }
 
-.cover-edit {
-    width: 200px;
+#cover {
+    width: 180px;
 }
 
 .wrapper {
