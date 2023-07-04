@@ -54,13 +54,14 @@ export function Home({ showProfile }) {
         >
           { filter_options }
         </select>
-        
+
         <button className="search-btn block-button-small" style={{width: '90px', height: '36px'}} onClick={filterSearch}> Search </button>
-        <button className='block-button-small' style={{width: '120px', height: '36px'}} onClick={()=>{
-                    document.getElementById('myDialog').showModal();
-                }}>
-                New Post
-                </button>
+        <button className='block-button-small' style={{width: '120px', height: '36px'}} 
+            onClick={()=>{
+                document.getElementById('myDialog').showModal();
+            }}>
+            New Post
+        </button>
       </div>
       <PostWall posts={posts} showProfile={showProfile} />
     </div>

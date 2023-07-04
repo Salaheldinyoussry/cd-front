@@ -7,7 +7,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/ReactToastify.min.css";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+document.title = 'Designer Catalyst';
 root.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -7,7 +7,7 @@ export function GenerateImage() {
 
       <div className="generate-div">
         <input type="text" className="text-prompt" placeholder="Text prompt" />
-        <button className="action-btn generate block-button-small" > 
+        <button className="action-btn generate block-button-small"> 
           <i className="bx bx-play" style={{ fontSize: '20px' }}></i>
           generate
         </button>
@@ -37,7 +37,7 @@ export function GenerateImage() {
             src="https://fastly.picsum.photos/id/596/1024/768.jpg?hmac=q9PXDEOrLj3oAS3xpSFnYzN__ZQa_RxqouJ0G-sHQ8A" 
             alt="Generated" />
           <div className="control generated-control">
-            <button className="action-btn block-button-small"  >
+            <button className="action-btn block-button-small"> 
               <i className="bx bx-save" style={{ fontSize: '20px' }}></i>
               save
             </button>

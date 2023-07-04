@@ -44,7 +44,104 @@
    color: #616770;
    font-size: 0.8rem;
 }
+
+/* dots */
+.dots-icon {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+   width: 100px;
+}
+
+.dots {
+   margin-left: auto;
+   position: relative;
+   display: inline-block;
+}
+
+.dots-content {
+   display: none;
+   position: absolute;
+   background-color: #f9f9f9;
+   min-width: 100px;
+   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+   z-index: 1;
+}
  
+.dots-content a {
+   color: black;
+   font-size: 14px;
+   padding: 10px;
+   text-decoration: none;
+   display: block;
+}
+ 
+.dots-content a:hover {
+   background-color: #f1f1f1;
+   cursor: pointer;
+}
+ 
+.dots:hover .dots-content {
+   display: block;
+}
+
+/* edit dialog */
+.post-edit {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   border-radius: 10px;
+   padding: 40px;
+}
+
+textarea .description {
+   display: block;
+   border: 1px solid #604d92;
+   margin: 15px;
+   margin-left: 0;
+   width: 100%;
+   border-radius: 5px;
+   padding: 10px;
+}
+
+.post-edit h1 {
+   font-size: 23px;
+   font-weight: 500;
+   margin-bottom: 10px;
+}
+
+.post-edit input {
+   display: block;
+   border: 1px solid #604d92;
+   margin: 15px;
+   margin-left: 0;
+}
+
+.submitBtn {
+   background-color: #604d92;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 5px;
+   cursor: pointer;
+   margin: 15px;
+   margin-left: 0;
+}
+ 
+.close-bar {
+   display: flex;
+   justify-content: flex-start;
+}
+ 
+.closeBtn {
+   margin-left: auto;
+   background-color: transparent;
+   font-size: 20px;
+   cursor: pointer;
+}
+
+/* post content */
 .post-content {
    width: 600px;
    height: 500px;
