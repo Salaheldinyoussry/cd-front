@@ -76,20 +76,13 @@ export function PostWall({ me , posts , profileId , showProfile }) {
 
     return (
         <div className="post-wall">
-            {!me && !profileId && 
-                <div className='add-post' onClick={()=>{
-                    document.getElementById('myDialog').showModal();
-                }}>
-                New Post
-                </div>
-            }
 
             <dialog id="myDialog">
             <button id="closeBtn" onClick ={()=>{
                 document.getElementById('myDialog').close();
             }}>x</button>
             <h1>Create Post</h1>
-            <textarea id="description" name="description" placeholder='write a description...' rows="4" cols="50"></textarea>
+            <textarea id="description" name="description" placeholder='Write a description...' rows="4" cols="50"></textarea>
 
             <ImageSelector  images={images} addImage={addImage} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
             

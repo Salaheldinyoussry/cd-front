@@ -42,6 +42,7 @@ export function SideBar() {
     function useToggle() {
         if(sidebar.className === 'sidebar')
             sidebar.classList.add('open');
+            
         else
             sidebar.classList.remove('open');
     }
@@ -74,8 +75,8 @@ export function SideBar() {
                     </div>
 
                     <div className="logo">
-                        <img style={{borderRadius:"50%"}} src={user.avatar?user.avatar:avatar} alt="avatar"/>
-                        <h3>{user.name?user.name:""}</h3>
+                        <img style={{height : '60px', width:'60px',borderRadius : '50% 50% 50% 50%'}} src={user.avatar?user.avatar:avatar} alt="avatar"/>
+                        <h3 style={{color : 'white', fontSize : '26px'}}>{user.name?user.name:""}</h3>
                     </div>
 
                     <br/> 
@@ -115,7 +116,7 @@ export function SideBar() {
                             <li>
                                 <Link to="/draw" className="nav-item" id="/draw">
                                     <i className="bx bxs-pencil"></i>
-                                    <span>Draw</span>
+                                    <span>Generate Mask</span>
                                 </Link>
                             </li>
                             <li>
@@ -133,7 +134,7 @@ export function SideBar() {
                             <li style={{marginTop: '30px'}} onClick={signOut}>
                                 <Link to="/login" className="nav-item">
                                     <i className="bx bx-log-out"></i>
-                                    <span>Settings</span>
+                                    <span>Log out</span>
                                 </Link>
                             </li>
                         </ul>

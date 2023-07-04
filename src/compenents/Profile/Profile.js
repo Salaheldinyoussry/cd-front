@@ -229,24 +229,27 @@ export function Profile({ profileId }) {
                     <img src={cover} alt="cover" />
                     <div className="pro-banner"></div>
                 </div>
-                <div className="pro-head-img">
-                    <div>
-                        <img className="pro-img" src={avatar} alt="avatar" />
+                <div className="pro-head-img" style={{height:"280px"}}>
+                    <div style={{height : '160px', width : '160px'}}>
+                        <img className="pro-img"  style={{height : '100%', width : '100%'}} src={avatar} alt="avatar" />
                         {!profileId &&
-                            <input type="file" id="pro-image" name="image" accept="image/*" onChange={editAvatar}/>
+                            <div className="block-button-small" style={{position: 'relative', 'text-align': 'center', width: '160px'}}><h4 style = {{top: '0%', left: '0%', transform: 'translateX(0%) translateY(30%)'}}> Edit Profile</h4>
+                            <input type="file" style={{opacity: "0%", transform: 'translateX(0%) translateY(-60%)', width: '160px'}} className="block-button-small" id="pro-image" name="image" accept="image/*" onChange={editAvatar}/></div>
                         }
                     </div>
-                    <input type="text" className="pro-name" value={newName} disabled={isNameDisabled}
+                    <input type="text" className="pro-name" value={newName} disabled={isNameDisabled} style={{transform: 'translateX(0%) translateY(60%)'}}
                         onChange={(e) => {
                             setNewName(e.target.value);
                         }}
                     />
                     {!profileId &&   
-                        <div className="wrapper">  
+                        <div className="wrapper" style={{transform: 'translateX(0%) translateY(60%)'}}>  
                             <button className="edit-icon" onClick={editName}>
                                 <i className="bx bx-pencil"></i>
                             </button>
-                            <input type="file" className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
+                            <div className="block-button-small" style={{position: 'relative', 'text-align': 'center', width: '200px'}}><h4 style = {{top: '50%', left: '50%', transform: 'translateX(0%) translateY(30%)'}}> Edit Cover</h4>
+                                <input type="file" style = {{opacity: "0%", transform: 'translateX(0%) translateY(-60%)', width: '200px', height:'42px'}} className="cover-edit" name="image" accept="image/*" onChange={editCover}/>
+                            </div>
                         </div>  
                     }  
                     {profileId &&

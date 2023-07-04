@@ -30,7 +30,7 @@
 .bug-card .bug {
     display: grid;
     grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto;
     gap: 8px;
     margin: 10px;
     padding: 10px;
@@ -58,16 +58,28 @@
 }
 
 .bug-card .submit {
-    width: 600px;
-    padding: 0 10px;
+    color: #604d92;
+    width: 120px;
+    padding: 0 0px;
+    border: 1px solid #604d92;
     display: flex;
     justify-content: right;
+    right: 1%;
+    cursor: pointer;
 }
 
 .bug-card .submit .bug-submit {
     width: 120px;
-    height: 30px;
+    height: 40px;
     font-size: 20px;
     font-family: 'Times New Roman', Times, serif;
     font-style: bold;
 }
+
+.submit:hover {
+    background-color: #604d92;
+    color: #fff;
+}
+
+.submit {
+    background-color: #fff;}

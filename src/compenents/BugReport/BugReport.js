@@ -42,13 +42,11 @@ export function BugReport() {
 
   return (
     <div className="bug-report">
-      <div className="bug-card">
-        <h1> Report a Bug </h1>
+      <div className="bug-card" style={{'background-color' : 'white'}}>
+        <h2> Report a Bug </h2>
         <form className="bug">
-          <h2> Title </h2>
-          <input type="text" className="bug-title" id="bug-title" />
-          <h2> Description </h2>
-          <textarea className="bug-description" id="bug-description"></textarea>
+          <textarea type="text" placeholder="Write a title..." className="bug-title" id="bug-title" style={{width : '100%', border: '1px solid #604d92', 'border-radius': '5px'}}/>
+          <textarea placeholder="Write a description..." className="bug-description" id="bug-description" style={{width : '100%', border: '1px solid #604d92', 'border-radius': '5px'}}></textarea>
         </form>
         <div className="submit">
           <input type="submit" className="block-button-small" onClick={bugReport} />

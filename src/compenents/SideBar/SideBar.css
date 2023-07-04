@@ -27,7 +27,15 @@
 }
 
 .sidebar.open {
-	width: 280px;
+	width: 266px;
+}
+
+.sidebar.open .logo{
+	transform: translateX(0%) translateY(0%)
+}
+
+.sidebar .logo{
+	transform: translateX(-10%) translateY(0%)
 }
 
 .sidebar .logo {
@@ -45,7 +53,7 @@
 }
 
 .sidebar.open .logo img {
-	width: 80px;
+	width: 60px;
 }
 
 .sidebar .logo h3 {

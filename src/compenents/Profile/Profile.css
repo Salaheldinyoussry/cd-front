@@ -49,7 +49,7 @@
 }
 
 .pro-head{
-    height: 500px;
+    height: 550px;
     width: 100%;
     color: #1c1e21;
     direction: ltr;
@@ -114,7 +114,7 @@ body{
     background-color: #FFF;
     position: absolute;
     bottom: 0;
-    height: 100px;
+    height: 150px;
     width: 100%;
 }
 
@@ -259,3 +259,23 @@ body{
     padding: 5px;
     background-color: #e7e7e7;
 }
+
+.block-button-small {
+    background-color: white;
+    color: #604d92;
+    width: 120px;
+      height: 40px;
+      font-size: 20px;
+  }
+  .block-button-small:hover {
+    background-color: #604d92;
+    color: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .block-button-small:active {
+    transform: translateY(1px);
+    outline: none;
+  }
+
+
+  

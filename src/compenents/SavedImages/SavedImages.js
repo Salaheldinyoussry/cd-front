@@ -78,11 +78,11 @@ export function SavedImages() {
         </div>
          <div style={{padding:"150px 10%" , textAlign:"center"}}>
             {
-              gn&& generated_images.map((image,index) =>     <img style={{border:"1px solid #eee",width:"400px" , height:"400px", margin:"4px"}} className="image" key={index} id={index} src={image.url} alt="..." onClick={showImage} />)
+              gn&& generated_images.map((image,index) =>     <img style={{border:"1px solid #000",width:"400px" , height:"400px", margin:"4px"}} className="image" key={index} id={index} src={image.url} alt="..." onClick={showImage} />)
 
             }
             {
-              !gn&& seg_masks.map((image,index) =>     <img className="image" style={{border:"1px solid #eee", width:"400px" , height:"400px", margin:"4px"}} key={index} id={index} src={image.url} alt="..." onClick={showImage} />)
+              !gn&& seg_masks.map((image,index) =>     <img className="image" style={{border:"1px solid #000", width:"400px" , height:"400px", margin:"4px"}} key={index} id={index} src={image.url} alt="..." onClick={showImage} />)
 
             }
          </div>
