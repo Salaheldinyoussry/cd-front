@@ -41,7 +41,7 @@ export function Home({ showProfile }) {
 
   return (
     <div className="home">
-      <div className="search-bar">
+      <div className="search-bar" style={{width: '760px'}}>
         <input type="search" className="search-text" id="search-prompt" 
           onChange={(e) => {
             setSearchFilter(e.target.value);
@@ -54,7 +54,13 @@ export function Home({ showProfile }) {
         >
           { filter_options }
         </select>
-        <button className="search-btn" onClick={filterSearch}> Search </button>
+        <button className="search-btn block-button-small" style={{width: '90px', height: '36px'}} onClick={filterSearch}> Search </button>
+        <button className='block-button-small' style={{width: '120px', height: '36px'}} 
+            onClick={()=>{
+                document.getElementById('myDialog').showModal();
+            }}>
+            New Post
+        </button>
       </div>
       <PostWall posts={posts} showProfile={showProfile} />
     </div>

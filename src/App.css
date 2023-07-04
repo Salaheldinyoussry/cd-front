@@ -96,15 +96,15 @@
 }
 
 .block-button-small {
-  background-color: black;
-  color: white;
-  border: none;
-  display: inline-block;
-  width: 100px;
+  background-color: white;
+  color: #604d92;
+  width: 120px;
   height: 40px;
-  font-size: 16px;
+  font-size: 20px;
 }
 .block-button-small:hover {
+  background-color: #604d92;
+  color: #fff;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .block-button-small:active {

@@ -89,8 +89,7 @@ export function DrawToolBar({ setLineWidth, setBrushColor, brushColor, setIsEras
             </div>
 
             <div className="button-bar">
-                <button className="btn save"
-
+                <button className="btn save block-button-small" style={{width: '120px'}}
 
                     onClick={(e) => {
                        canvasElement.current.toBlob(async (blob) => {
@@ -120,11 +119,11 @@ export function DrawToolBar({ setLineWidth, setBrushColor, brushColor, setIsEras
                         
                     }}>
 
-
                     <i className="bx bx-save" style={{ fontSize: '22px' }}></i>
                     Save 
                 </button>
-                <button className="btn download" 
+                <button className="btn download block-button-small" style={{width: '140px'}} 
+
                     onClick={(e) => {
                         var imageURI = canvasElement.current.toDataURL("image/png");
                         const downloadEl = document.createElement('a');
