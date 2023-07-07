@@ -36,7 +36,7 @@ export function BugReport() {
     });
   }
 
-  function checkFields(requestObject, fields){
+  function checkFields(requestObject, fields) {
     return fields.every(k => (k in requestObject && requestObject[k] && requestObject[k].trim().length > 0))
   }
 

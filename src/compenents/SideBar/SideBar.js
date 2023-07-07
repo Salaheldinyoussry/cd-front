@@ -42,6 +42,7 @@ export function SideBar() {
     function useToggle() {
         if(sidebar.className === 'sidebar')
             sidebar.classList.add('open');
+            
         else
             sidebar.classList.remove('open');
     }
