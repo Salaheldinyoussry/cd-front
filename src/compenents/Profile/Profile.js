@@ -250,7 +250,7 @@ export function Profile({ profileId }) {
                             <button className="edit-icon" onClick={editName}>
                                 <i className="bx bx-pencil"></i>
                             </button>
-                            <div className="block-button-small" style={{position: 'relative', 'text-align': 'center', width: '200px'}}>
+                            <div className="block-button-small" style={{position: 'relative', 'text-align': 'center', width: '160px'}}>
                                 <h4 style = {{top: '50%', left: '50%', transform: 'translateX(0%) translateY(30%)'}}> Edit Cover</h4>
                                 <input type="file" style = {{opacity: "0%", transform: 'translateX(0%) translateY(-60%)', width: '200px', height:'42px'}} 
                                     id="cover" name="image" accept="image/*" onChange={editCover}/>

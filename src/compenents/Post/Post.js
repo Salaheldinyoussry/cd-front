@@ -165,16 +165,18 @@ export function Post({ post, isStared, showProfile }) {
                     <div className="username" id={post.userId?.id} onClick={showProfile}> {post.userId?.name} </div>
                     <div className="post-date"> {new Date(post.createdAt).toUTCString()} </div>
                 </div>
-                
-                <div className="dots">
-                    <div className="dots-icon">
-                        <i className="bx bx-dots-vertical" style={{fontSize:'24px', paddingTop:'5px'}} ></i>
+
+                {(post.userId?.id===JSON.parse(sessionStorage.getItem('user')).id) &&
+                    <div className="dots">
+                        <div className="dots-icon">
+                            <i className="bx bx-dots-vertical" style={{fontSize:'24px', paddingTop:'5px'}} ></i>
+                        </div>
+                        <div class="dots-content">
+                            <a id={post.id} onClick={deletePost}> Delete </a>
+                            <a id={post.id} onClick={editPost}> Edit </a>
+                        </div>
                     </div>
-                    <div class="dots-content">
-                        <a id={post.id} onClick={deletePost}> Delete </a>
-                        <a id={post.id} onClick={editPost}> Edit </a>
-                    </div>
-                </div>
+                }
             </div>
 
             <div className="post-text" style={{padding:"10px 20px"}}>

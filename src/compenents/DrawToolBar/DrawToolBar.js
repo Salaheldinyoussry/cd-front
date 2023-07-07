@@ -98,7 +98,7 @@ export function DrawToolBar({ setLineWidth, setBrushColor, brushColor, setIsEras
                             formData.append("file", blob, "canvas-image.png");
                             formData.append("type", 'mask');
 
-                            const response = await fetch(process.env.REACT_APP_API_BASE_URL+ 'image/upload', {
+                            const response = await fetch(/*process.env.REACT_APP_API_BASE_URL*/ "http://localhost:1337/"+ 'image/upload', {
                                 method: 'POST',
                                 body: formData,
                                 headers: new Headers({

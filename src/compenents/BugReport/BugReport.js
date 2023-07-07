@@ -13,8 +13,8 @@ export function BugReport() {
     console.log(title + " " + description);
 
     const report = {
-      "Title": title,
-      "Description": description
+      "title": title,
+      "description": description
     }
 
     if(!checkFields(report, ['Title', 'Description']) ) {
