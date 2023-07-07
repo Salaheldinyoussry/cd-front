@@ -14,7 +14,6 @@ export function SavedImages() {
       setSegMasks(res.images.filter((image) => image.type === 'mask'));
     });
 
-
   }, []);
 
   const [maximizedImage, setMaximizedImage] = useState(null);
@@ -47,30 +46,9 @@ export function SavedImages() {
     setMaximizedImage(null);
   }
 
-  /*useEffect(() => {
-    let generated_images_urls = [];
-    for(let i=0; i<10; i++) {
-      new Promise(resolve => {
-        let req = new XMLHttpRequest();
-        req.onload = function () {
-           resolve(this.responseURL);
-        };
-        req.open("get", "https://picsum.photos/1024/768/?random", true);
-        req.send();
-      }).then(url => {
-        console.log(url);
-        generated_images_urls.unshift(url);
-      });
-    }
-    generated_images = generated_images_urls.map((image) => 
-        <img src={image} />
-    );
-  }, []);*/
-
   return (
     <div className="saved-images">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-      {/* <div className="gallery-wrapper"> */}
         <div className='gall-head' >
           <h1 style={{borderTopLeftRadius:"12px" , borderBottomLeftRadius:"12px"}} className={gn?"sel":""}  onClick={()=>{setGn(true)}} >Images</h1>
           <h1 style={{borderTopRightRadius:"12px" , borderBottomRightRadius:"12px"}} className={!gn?"sel":""}  onClick={()=>{setGn(false)}}>Masks</h1>
@@ -88,7 +66,6 @@ export function SavedImages() {
 
             }
          </div>
-      {/* </div> */}
       { maximizedImage }
     </div>
   );
