@@ -17,7 +17,7 @@ export function BugReport() {
       "description": description
     }
 
-    if(!checkFields(report, ['Title', 'Description']) ) {
+    if(!checkFields(report, ['title', 'description']) ) {
       alert("Please, fill all fields");
       return;
     }

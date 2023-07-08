@@ -101,12 +101,6 @@ export function SideBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/morphing" className="nav-item" id="/morphing">
-                                    <i className="bx bxs-image"></i>
-                                    <span>Image Morphing</span>
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/images" className="nav-item" id="/images">
                                     <i className="bx bxs-photo-album"></i>
                                     <span>Saved Images</span>
@@ -130,7 +124,7 @@ export function SideBar() {
                                     <span>Report Bug</span>
                                 </Link>
                             </li>
-                            <li style={{marginTop: '30px'}} onClick={signOut}>
+                            <li style={{marginTop: '50px'}} onClick={signOut}>
                                 <Link to="/login" className="nav-item">
                                     <i className="bx bx-log-out"></i>
                                     <span>Log out</span>
