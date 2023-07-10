@@ -108,6 +108,7 @@ export function SideBar() {
                                 </Link>
                             </li>
                             <li>
+
                                 <Link to="/images" className="nav-item" id="/images">
                                     <i className="bx bxs-photo-album"></i>
                                     <span>Saved Images</span>

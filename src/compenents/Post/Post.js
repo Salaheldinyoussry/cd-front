@@ -82,7 +82,7 @@ export function Post({ post, isStared, showProfile }) {
     }
 
     function showImages(img, index, length){
-        if(index < maxImagesCount - 1 || (index == (maxImagesCount - 1) && length == maxImagesCount)){
+        if(index < maxImagesCount - 1 || (index === (maxImagesCount - 1) && length === maxImagesCount)){
             return <img
                     src={ img }
                     onClick={ () => openImageViewer(index) }
@@ -91,7 +91,7 @@ export function Post({ post, isStared, showProfile }) {
                     style={{ margin: '2px' }}
                     alt=""/>
         }
-        else if(index == (maxImagesCount - 1)) {
+        else if(index === (maxImagesCount - 1)) {
             let remaining = length - maxImagesCount;
             return <div style={{position: 'relative', 'text-align': 'center'}}>
                 <h3 style={{position:'absolute', zIndex : '1', color : 'white', 'font-size' : '380%', 'font-weight': 'normal', 
